@@ -144,6 +144,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 .cv-head{position:relative;z-index:2}
 .cv-title{margin-top:clamp(16px,2.8vh,32px);font-size:clamp(31px,5.1vw,80px);text-wrap:balance}
 .cv-title u{text-decoration:none;color:var(--teal)}
+.cv-title i{font-style:italic}
 /* 세 줄이 오른쪽 이미지에 닿지 않도록 표지 리드만 조금 작게 */
 .cv-lead{max-width:none;font-size:clamp(13px,1.1vw,17.5px);line-height:1.75}
 .cv-keys{position:relative;z-index:2;margin-top:clamp(10px,1.7vh,20px);
@@ -409,7 +410,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
   grid-template-columns:clamp(150px,16vw,250px) minmax(0,clamp(480px,50vw,780px));
   justify-content:center}
 
-.q{grid-column:2;grid-row:var(--gr);z-index:1;display:flex;align-items:center;
+.q{position:relative;grid-column:2;grid-row:var(--gr);z-index:1;display:flex;align-items:center;
   width:max-content;max-width:100%;justify-self:start;opacity:0;
   padding:clamp(7px,1vh,13px) clamp(12px,1.2vw,22px);border-radius:11px;
   background:var(--card);border:1px solid var(--line);color:var(--ink);
@@ -423,6 +424,12 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
              padding .7s var(--ease-settle) calc(var(--i) * 55ms);
   will-change:transform}
 #sort.seen .q{opacity:1}
+
+/* 오늘 짚고 갈 세 질문 — 흩어져 있을 때는 초록 카드로 채워 바로 눈에 띄게 */
+.q.hi{background:var(--teal);border-color:var(--teal);color:#fff}
+
+/* 분류된 뒤에는 강조를 걷는다 — 각 분류의 첫 줄이라는 위치가 이미 강조다 */
+#sort[data-active="1"] .q.hi{color:var(--ink-2);font-weight:700}
 /* 분류 후 : 상자는 .qbox 가 그리고 질문은 그 안의 문장 줄로만 남는다.
    폭(max-content)은 그대로 두는 게 핵심이다 — width 는 전환이 안 먹어서 스냅한다.
    오른쪽 정렬은 상자가 맡으므로 글줄은 자연스러운 길이로 둔다. */
@@ -518,8 +525,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 
 /* ═════ 08 판독기 ═════ */
 .dc-pick{display:flex;flex-wrap:wrap;gap:9px;margin-top:clamp(18px,3vh,32px)}
-.dc-pick button{padding:clamp(10px,1.4vh,15px) clamp(13px,1.25vw,22px);border-radius:999px;
-  border:1px solid var(--line);background:var(--card);font-size:clamp(11.5px,.95vw,15px);font-weight:800;
+.dc-pick button{padding:clamp(12px,1.8vh,20px) clamp(16px,1.5vw,28px);border-radius:999px;
+  border:1px solid var(--line);background:var(--card);font-size:clamp(13px,1.12vw,18px);font-weight:800;
   letter-spacing:-.03em;color:var(--ink-2);transition:.3s var(--ease)}
 .dc-pick button:hover{border-color:var(--ink);transform:translateY(-2px)}
 .dc-pick button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -529,36 +536,50 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
   gap:clamp(16px,2.4vw,42px);align-items:stretch}
 .dc-brief{background:var(--card);border:1px solid var(--line-s);border-left:5px solid var(--teal-b);box-shadow:var(--sh-m);border-radius:19px;padding:clamp(18px,2.6vh,30px) clamp(17px,1.7vw,30px);
   display:flex;flex-direction:column;justify-content:center;gap:11px}
-.dc-brief .k{font-size:10.5px;font-weight:900;letter-spacing:.15em;color:var(--teal-b)}
-.dc-brief .t{font-size:clamp(17px,1.8vw,30px);font-weight:900;letter-spacing:-.045em;line-height:1.16}
-.dc-brief .d{font-size:clamp(12px,.98vw,15.5px);font-weight:600;color:var(--gray);line-height:1.55}
+.dc-brief .k{font-size:clamp(11px,.86vw,14px);font-weight:900;letter-spacing:.15em;color:var(--teal-b)}
+.dc-brief .t{font-size:clamp(20px,2.15vw,37px);font-weight:900;letter-spacing:-.045em;line-height:1.16}
+.dc-brief .d{font-size:clamp(13px,1.12vw,18px);font-weight:600;color:var(--gray);line-height:1.6}
 .dc-need{display:grid;gap:clamp(9px,1.3vh,14px)}
-.dc-row{display:grid;grid-template-columns:clamp(78px,8.2vw,132px) 1fr;gap:clamp(12px,1.4vw,26px);align-items:center;
+.dc-row{display:grid;grid-template-columns:clamp(78px,8.2vw,132px) minmax(0,1fr) clamp(84px,10vw,168px);
+  gap:clamp(12px,1.4vw,26px);align-items:center;
   background:var(--card);border:1px solid var(--line-s);border-radius:15px;box-shadow:var(--sh-s);
   padding:clamp(12px,1.8vh,20px) clamp(13px,1.4vw,24px);transition:.4s var(--ease)}
 .dc-row.off{opacity:.5}
-.dc-row .nm{font-size:clamp(12px,1.06vw,17px);font-weight:900;letter-spacing:-.04em;color:var(--rc)}
+.dc-row .nm{font-size:clamp(14px,1.28vw,21px);font-weight:900;letter-spacing:-.04em;color:var(--rc)}
 .dc-row .nm em{display:block;font-style:normal;font-size:.68em;font-weight:800;letter-spacing:.1em;color:var(--gray-l);margin-top:3px;font-variant-numeric:tabular-nums}
-.dc-row .txt{font-size:clamp(11.5px,.96vw,15.5px);font-weight:700;color:var(--ink);line-height:1.5;letter-spacing:-.03em}
-.dc-row .txt s{display:block;text-decoration:none;font-size:.83em;font-weight:600;color:var(--gray);margin-top:4px}
+.dc-row .txt{font-size:clamp(13.5px,1.16vw,19px);font-weight:700;color:var(--ink);line-height:1.5;letter-spacing:-.03em}
+.dc-row .txt s{display:block;text-decoration:none;font-size:.8em;font-weight:600;color:var(--gray);margin-top:6px}
 .dc-row.off .txt{color:var(--gray)}
-.dc-meter{grid-column:1/-1;height:3px;border-radius:3px;background:rgba(15,20,26,.09);margin-top:11px;overflow:hidden}
-.dc-meter i{display:block;height:100%;width:0;background:var(--rc);border-radius:3px;transition:width .7s var(--ease)}
-.dc-row.on .dc-meter i{width:var(--lvl,100%)}
+/* 성숙도를 5칸으로 — 길이보다 '몇 칸까지 왔나'가 한눈에 읽힌다 */
+.dc-seg{display:flex;gap:clamp(4px,.4vw,7px);justify-self:end;width:100%}
+.dc-seg i{flex:1;height:11px;border-radius:5px;background:#DCE1E7;
+  transition:background .5s var(--ease),transform .5s var(--ease-back)}
+.dc-seg[data-fill="1"] i:nth-child(-n+1),
+.dc-seg[data-fill="2"] i:nth-child(-n+2),
+.dc-seg[data-fill="3"] i:nth-child(-n+3),
+.dc-seg[data-fill="4"] i:nth-child(-n+4),
+.dc-seg[data-fill="5"] i:nth-child(-n+5){background:var(--rc)}
+.dc-row.on .dc-seg i{animation:dcSeg .45s var(--ease-back) both}
+.dc-seg i:nth-child(2){animation-delay:.06s}
+.dc-seg i:nth-child(3){animation-delay:.12s}
+.dc-seg i:nth-child(4){animation-delay:.18s}
+.dc-seg i:nth-child(5){animation-delay:.24s}
+@keyframes dcSeg{from{transform:scaleX(.2);opacity:.3}to{transform:none;opacity:1}}
 
 /* 08 판독기 — 1080p 미만 화면에서 한 화면에 수납 */
-#decode .lead{max-width:82ch}
+#decode .lead{max-width:none}
+/* 세 질문은 한 줄에 놓여야 병렬로 읽힌다 */
+.dc-q1{display:inline-block;white-space:nowrap;font-size:clamp(12px,.96vw,16px)}
 #decode .dc-pick{margin-top:clamp(13px,2.1vh,24px)}
 #decode .dc-out{margin-top:clamp(12px,1.9vh,22px)}
-#decode .dc-need{gap:clamp(8px,1.1vh,12px)}
-#decode .dc-row{padding:clamp(9px,1.3vh,16px) clamp(13px,1.4vw,24px)}
-#decode .dc-row .txt s{margin-top:2px}
+#decode .dc-need{gap:clamp(11px,1.6vh,18px)}
+#decode .dc-row{padding:clamp(15px,2.3vh,28px) clamp(16px,1.7vw,30px)}
+#decode .dc-row .txt s{margin-top:5px}
 @media (max-height:940px){
   #decode{padding-top:clamp(66px,9vh,104px);padding-bottom:clamp(40px,5vh,64px)}
   #decode .t-big{font-size:clamp(28px,4.1vw,52px)}
-  #decode .dc-brief{padding:clamp(14px,2vh,22px) clamp(16px,1.6vw,26px)}
+  #decode .dc-brief{padding:clamp(20px,3vh,34px) clamp(20px,2vw,34px)}
 }
-#decode .dc-meter{margin-top:9px}
 
 /* ═════ 09 트랙 / 10 마무리 ═════ */
 .tracks{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.4vw,42px);margin-top:clamp(22px,3.6vh,44px)}
@@ -575,6 +596,8 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 .tr li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:clamp(11.5px,.94vw,15px);font-weight:700;color:var(--ink-2);line-height:1.45}
 .tr.hi li{color:var(--ink)}
 .tr li s{text-decoration:none;opacity:.5;font-family:var(--mono);font-size:.88em}
+.tr li>span{display:block;min-width:0}
+.tr li b{font-weight:900;color:var(--ink)}
 
 .close-list{margin-top:clamp(24px,4.2vh,52px);border-top:1px solid var(--line)}
 .close-list li{display:grid;grid-template-columns:46px 1fr;gap:clamp(12px,1.5vw,26px);align-items:center;
@@ -589,98 +612,383 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 .foot b{color:var(--ink)}
 
 
-/* ═════ 질문력 쪽지시험 : 사람 ↔ AI 역할 선 잇기 ═════
-   흐린 배경 위에 뜬 팝업 한 장. 좌우 행 높이를 그리드로 맞춰야 연결선이 반듯하게 그어진다. */
-.qz{position:relative;overflow:hidden}
-.qz::before{content:"";position:absolute;inset:0;z-index:0;
-  background:rgba(15,20,26,.26);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
-.qz .wrap{position:relative;z-index:1;display:flex;justify-content:center}
 
-.qz-card{position:relative;width:min(100%,980px);
-  padding:clamp(30px,4.2vh,52px) clamp(26px,3.2vw,58px) clamp(20px,2.6vh,32px);
-  background:var(--card);border-radius:22px;
-  box-shadow:0 2px 6px rgba(15,20,26,.07),0 34px 84px rgba(15,20,26,.3);
-  opacity:0;transform:translateY(16px) scale(.97);
-  transition:opacity .55s var(--ease),transform .6s var(--ease-back)}
-.qz-card.in{opacity:1;transform:none}
-.qz-pin{position:absolute;left:50%;top:clamp(-16px,-1.8vh,-12px);transform:translateX(-50%);
-  font-size:clamp(24px,2.3vw,34px);line-height:1;filter:drop-shadow(0 5px 10px rgba(15,20,26,.3))}
+/* ═════ 데이터 축적 실습 : #recap 의 창·채팅 UI 를 재사용한다 ═════
+   상태는 #t-data[data-step] 하나. 좌 앱 미리보기 / 우 Claude 채팅. */
+.dt-head{margin:0 auto clamp(12px,1.8vh,22px)}
+.dt h2{font-size:clamp(20px,2.25vw,35px)}
+.dt-rc{height:min(74svh,720px)}
+.dt-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
 
-.qz-h{text-align:center;font-size:clamp(15px,1.45vw,23px);font-weight:900;
-  letter-spacing:-.035em;color:var(--teal)}
-.qz-q{text-align:center;
-  font-size:clamp(18px,1.85vw,31px);font-weight:800;letter-spacing:-.042em;color:var(--ink);line-height:1.3}
-.qz-rule{margin-top:clamp(16px,2.2vh,26px);height:1px;background:var(--line-s)}
+/* ── 좌 : 앱 미리보기 ── */
+.dt-app{position:relative;display:flex;flex-direction:column;min-width:0;
+  border-right:1px solid var(--line-s);background:#F7F9FA}
+.dt-hero{flex:none;padding:clamp(13px,1.8vh,20px) clamp(15px,1.6vw,26px);background:#12294A;color:#fff}
+.dt-hero b{display:block;font-family:var(--serif,Georgia),Georgia,serif;
+  font-size:clamp(15px,1.35vw,23px);font-weight:700;letter-spacing:-.01em}
+.dt-hero span{display:block;margin-top:3px;font-size:clamp(10.5px,.8vw,13.5px);
+  font-weight:600;color:#A9C0DC}
+.dt-app-body{flex:1;min-height:0;overflow:auto;padding:clamp(14px,1.8vw,24px);background:#FAF7F0;
+  display:flex;flex-direction:column;gap:clamp(10px,1.4vh,16px)}
+.dt-row{display:flex;align-items:baseline;justify-content:space-between}
+.dt-row b{font-size:clamp(13px,1.08vw,18px);font-weight:800;color:var(--ink)}
+.dt-row span{font-size:clamp(12px,.92vw,15px);font-weight:800;color:#B0700F}
+.dt-bar{height:7px;border-radius:7px;background:#EAE3D6;overflow:hidden}
+.dt-bar i{display:block;height:100%;width:33%;border-radius:7px;background:#C98A21}
+.dt-list{display:flex;flex-direction:column;gap:8px}
+.dt-list li{display:grid;grid-template-columns:auto 1fr;align-items:center;
+  gap:4px 11px;padding:clamp(9px,1.2vh,14px) clamp(12px,1.2vw,18px);border-radius:12px;
+  background:#fff;border:1px solid rgba(15,20,26,.09)}
+.dt-list s{grid-row:1/3;width:19px;height:19px;border-radius:50%;flex:none;text-decoration:none;
+  display:grid;place-items:center;font-size:11px;font-weight:900;
+  background:#fff;border:1.5px solid #D8D2C6;color:transparent}
+.dt-list li.on s{background:#1E6B4F;border-color:#1E6B4F;color:#fff}
+.dt-list em{font-style:normal;font-size:clamp(12px,.95vw,15.5px);font-weight:800;color:var(--ink)}
+.dt-list small{font-size:clamp(10px,.78vw,12.5px);font-weight:600;color:var(--gray)}
 
-/* 좌·우를 같은 그리드 행으로 묶어 높이를 맞춘다 — 연결점이 어긋나지 않는 핵심 */
-.qz-board{position:relative;margin-top:clamp(16px,2.2vh,26px);
-  display:grid;grid-template-columns:clamp(160px,17vw,236px) clamp(54px,7vw,116px) minmax(0,1fr);
-  align-items:stretch}
-.qz-side{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));gap:clamp(11px,1.6vh,18px)}
-.qz-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.qz-wire{fill:none;stroke-width:2.5;stroke-linecap:round}
-.qz-wire.ok{stroke:var(--teal-b);stroke-dasharray:600;stroke-dashoffset:0;
-  animation:qzDraw .5s var(--ease) both}
-.qz-wire.no{stroke:#D9736C;stroke-dasharray:5 6}
-@keyframes qzDraw{from{stroke-dashoffset:600}to{stroke-dashoffset:0}}
+.dt-log{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;
+  border-radius:12px;background:#fff;border:1px solid rgba(15,20,26,.09);
+  padding:clamp(11px,1.4vh,16px) clamp(12px,1.2vw,18px);gap:9px;
+  transition:border-color .5s var(--ease),box-shadow .5s var(--ease)}
+.dt[data-step="4"] .dt-log{border-color:var(--teal-b);box-shadow:0 0 0 4px rgba(18,179,158,.13)}
+.dt-log-h{font-size:clamp(12px,.95vw,15.5px);font-weight:800;color:var(--ink)}
+.dt-empty{flex:1;display:grid;place-items:center;text-align:center;line-height:1.65;
+  font-size:clamp(12.5px,1vw,16.5px);font-weight:700;color:var(--gray);
+  transition:opacity .4s var(--ease)}
+.dt-empty.off{opacity:0}
 
-.qz-item{position:relative;display:flex;flex-direction:column;justify-content:center;
-  cursor:pointer;border-radius:13px;border:1px solid var(--line);background:var(--card);
-  padding:clamp(11px,1.5vh,16px) clamp(13px,1.3vw,20px);
-  font-size:clamp(13px,1.12vw,18.5px);font-weight:700;color:var(--ink-2);line-height:1.55;
-  letter-spacing:-.025em;transition:border-color .25s var(--ease),background .25s var(--ease),
-  color .25s var(--ease),box-shadow .25s var(--ease)}
-.qz-item:hover{border-color:var(--teal-b);color:var(--ink)}
-.qz-item.pick{border-color:var(--teal-b);background:#EAF7F5;color:var(--ink);
-  box-shadow:0 0 0 4px rgba(18,179,158,.15)}
-.qz-item.done{border-color:var(--teal-b);background:#EAF7F5;color:var(--ink);cursor:default}
-.qz-item.nudge{animation:qzNudge .4s var(--ease)}
-@keyframes qzNudge{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+/* 연동 후 대시보드 */
+.dt-dash{position:absolute;inset:clamp(34px,4.4vh,48px) clamp(12px,1.2vw,18px) clamp(11px,1.4vh,16px);
+  display:flex;flex-direction:column;gap:9px;opacity:0;visibility:hidden;
+  transform:translateY(8px);transition:.5s var(--ease)}
+.dt-dash.on{opacity:1;visibility:visible;transform:none}
+.dt-tbl{width:100%;border-collapse:collapse;font-size:clamp(9.5px,.72vw,12px)}
+.dt-tbl th{text-align:left;font-weight:800;color:var(--gray);padding:4px 6px;
+  border-bottom:1px solid var(--line-s)}
+.dt-tbl td{padding:5px 6px;font-weight:700;color:var(--ink-2);border-bottom:1px solid var(--line-s)}
+.dt-tbl tr:last-child td{border-bottom:0}
+.dt-chart{flex:1;min-height:44px;display:flex;align-items:flex-end;gap:clamp(5px,.7vw,10px);padding-top:4px}
+.dt-chart i{flex:1;border-radius:4px 4px 0 0;background:var(--teal);height:0;
+  transition:height .8s var(--ease-back)}
+.dt-dash.on .dt-chart i{height:var(--h)}
+.dt-chart i:nth-child(1){transition-delay:.05s}
+.dt-chart i:nth-child(2){transition-delay:.13s}
+.dt-chart i:nth-child(3){transition-delay:.21s}
+.dt-chart i:nth-child(4){transition-delay:.29s}
+.dt-chart i:nth-child(5){transition-delay:.37s}
 
-.qz-left .qz-item{align-items:flex-start;text-align:left}
-.qz-left b{font-size:clamp(17px,1.55vw,26px);font-weight:900;letter-spacing:-.045em;color:var(--ink)}
-.qz-left span{margin-top:4px;font-size:clamp(11px,.9vw,14.5px);font-weight:700;color:var(--gray)}
+/* 1단계 마커 */
+.dt-mark{position:absolute;left:50%;bottom:clamp(14px,2vh,24px);transform:translateX(-50%);
+  z-index:4;display:flex;align-items:center;gap:10px;white-space:nowrap;
+  padding:10px 18px 10px 10px;border-radius:999px;background:var(--ink);color:#fff;
+  font-size:clamp(11.5px,.92vw,15px);font-weight:800;letter-spacing:-.025em;
+  box-shadow:var(--sh-l);transition:.4s var(--ease-back)}
+.dt-mark b{width:22px;height:22px;border-radius:50%;background:var(--teal-b);color:#04120F;flex:none;
+  display:grid;place-items:center;font-size:12px;font-weight:900}
+.dt[data-step="1"] .dt-mark{animation:ccPulse 1.7s ease-in-out infinite}
+.dt:not([data-step="1"]) .dt-mark{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(8px)}
 
-.qz-item::after{content:"";position:absolute;top:50%;width:10px;height:10px;border-radius:50%;
-  background:var(--card);border:2px solid var(--line);transform:translateY(-50%);
-  transition:.25s var(--ease);z-index:2}
-.qz-left .qz-item::after{right:-6px}
-.qz-right .qz-item::after{left:-6px}
-.qz-item.pick::after,.qz-item.done::after{border-color:var(--teal-b);background:var(--teal-b)}
+/* 헤드라인 오른쪽이 늘 비어 있다 — 알림을 그 자리에 크게 띄운다 */
+.dt-toast{position:absolute;right:clamp(14px,1.6vw,26px);top:clamp(14px,2vh,24px);
+  z-index:6;display:flex;align-items:center;gap:9px;
+  padding:clamp(10px,1.3vh,15px) clamp(16px,1.6vw,24px);border-radius:999px;
+  background:var(--teal);color:#fff;white-space:nowrap;
+  font-size:clamp(13px,1.05vw,17.5px);font-weight:900;letter-spacing:-.025em;
+  box-shadow:0 12px 30px rgba(10,132,116,.45);
+  opacity:0;transform:translateY(-12px) scale(.92);transition:.5s var(--ease-back)}
+.dt-toast.on{opacity:1;transform:none}
+.dt-toast::before{content:"✓";flex:none;width:22px;height:22px;border-radius:50%;
+  background:rgba(255,255,255,.24);display:grid;place-items:center;font-size:13px;font-weight:900}
 
-.qz-mark{grid-column:2;align-self:center;justify-self:center;
-  font-size:clamp(16px,1.6vw,24px);opacity:.35;transition:opacity .4s var(--ease)}
-.qz-card.solved .qz-mark{opacity:0}
-
-.qz-foot{margin-top:clamp(14px,2vh,22px);min-height:clamp(46px,5.4vh,58px);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
-.qz-done{text-align:center;font-size:clamp(13.5px,1.12vw,18px);font-weight:800;color:var(--teal);
-  letter-spacing:-.03em;opacity:0;transform:translateY(6px);transition:.45s var(--ease)}
-.qz-card.solved .qz-done{opacity:1;transform:none}
-.qz-reset{padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);
-  font-size:11.5px;font-weight:800;color:var(--gray);transition:.2s var(--ease)}
-.qz-reset:hover{color:var(--ink);border-color:var(--ink)}
-
-/* 정답일 때 터지는 입자 — 카드 기준 절대좌표에 뿌리고 끝나면 스스로 사라진다 */
-.qz-spark{position:absolute;z-index:6;pointer-events:none;border-radius:50%;
+/* 성공 순간 터지는 입자 */
+.dt-spark{position:absolute;z-index:7;pointer-events:none;border-radius:50%;
   background:var(--teal-b);transform:translate(-50%,-50%);
-  animation:qzSpark .75s var(--ease) forwards}
-.qz-spark.sq{border-radius:2px}
-@keyframes qzSpark{
+  animation:dtSpark .8s var(--ease) forwards}
+.dt-spark.sq{border-radius:2px}
+@keyframes dtSpark{
   0%{opacity:1;transform:translate(-50%,-50%) scale(.5) rotate(0deg)}
-  65%{opacity:1}
-  100%{opacity:0;
-    transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.25) rotate(200deg)}
+  70%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.25) rotate(200deg)}
 }
-.qz-card.shake{animation:qzShake .42s var(--ease)}
-@keyframes qzShake{20%{transform:translateX(-8px)}50%{transform:translateX(7px)}80%{transform:translateX(-3px)}}
 
-@media (max-width:820px){
-  .qz-board{grid-template-columns:1fr;gap:10px}
-  .qz-side{grid-template-rows:none}
-  .qz-wires,.qz-mark{display:none}
-  .qz-item::after{display:none}
-  .qz-right .qz-item{margin-left:18px}
+/* ── 우 : 채팅 ── */
+.dt-chat{display:flex;flex-direction:column;min-width:0;
+  padding:clamp(12px,1.2vw,20px);gap:10px;background:var(--card)}
+.dt-thread{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;
+  justify-content:flex-end;gap:9px}
+.dt[data-step="1"] .cc-composer,.dt[data-step="2"] .cc-composer{opacity:.45;pointer-events:none}
+/* 코치 말풍선은 프롬프트가 준비된 뒤에만 — 안 그러면 1단계부터 3번이 떠 있다 */
+.dt .cc-coach{opacity:0;visibility:hidden;transform:translateY(7px)}
+.dt .dt-panel.ready .cc-coach{opacity:1;visibility:visible;transform:none}
+
+/* 객관식 */
+.dt .cc-msg{font-size:clamp(13.5px,1.12vw,18px);line-height:1.68;padding:12px 16px;max-width:92%}
+.dt .cc-field{font-size:clamp(12.5px,1vw,16.5px)}
+.dt .cc-ph{font-size:clamp(12.5px,1vw,16.5px)}
+.dt-ask{opacity:0;transform:translateY(10px);visibility:hidden;
+  transition:.45s var(--ease-back);align-self:flex-start;max-width:100%!important}
+.dt-ask.in{opacity:1;transform:none;visibility:visible}
+.dt-q{margin-top:clamp(9px,1.3vh,14px)}
+.dt-q-t{font-size:clamp(12px,.95vw,15.5px);font-weight:800;color:var(--ink);margin-bottom:9px}
+.dt-opts{display:flex;flex-wrap:wrap;gap:7px}
+.dt-opts.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.dt-pill,.dt-card{border:1px solid var(--line);background:var(--card);color:var(--ink-2);
+  font-weight:700;letter-spacing:-.02em;transition:.22s var(--ease);text-align:left}
+.dt-pill{padding:9px 17px;border-radius:999px;font-size:clamp(12px,.95vw,15.5px)}
+.dt-card{padding:11px 13px;border-radius:11px;display:flex;flex-direction:column;gap:3px}
+.dt-card b{font-size:clamp(12px,.95vw,15.5px);font-weight:800;color:var(--ink)}
+.dt-card span{font-size:clamp(10px,.76vw,13px);font-weight:600;color:var(--gray)}
+.dt-pill:hover,.dt-card:hover{border-color:var(--teal-b)}
+.dt-pill.on,.dt-card.on{background:var(--teal);border-color:var(--teal);color:#fff;
+  box-shadow:0 0 0 3px rgba(18,179,158,.16)}
+.dt-card.on b,.dt-card.on span{color:#fff}
+.dt-card.on span{opacity:.8}
+.dt-pill.shake,.dt-card.shake{animation:dtShake .42s var(--ease);border-color:#C9564C}
+@keyframes dtShake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* 선택 불가 사유는 선택지 바로 아래 줄로 — 떠 있는 툴팁은 스크롤 영역에 잘린다 */
+.dt-pill,.dt-card{position:relative}
+.dt-pill.warn,.dt-card.warn{border-color:#C9564C;background:#FBEFEE}
+.sh-go{display:inline-flex;align-items:center;gap:9px;background:var(--ink);border-color:var(--ink);
+  color:#fff;animation:ccPulse 1.6s ease-in-out infinite}
+.sh-go b{width:21px;height:21px;border-radius:50%;background:var(--teal-b);color:#04120F;flex:none;
+  display:grid;place-items:center;font-size:12px;font-weight:900}
+.sh-go:hover{background:#000;border-color:#000}
+/* 접었다 펴지 않고 자리를 미리 잡아둔다 — max-height 전환은 0 으로 잡히는 경우가 있다 */
+.dt-warn{margin-top:9px;min-height:1.6em;color:#A83E35;
+  font-size:clamp(12px,.92vw,15px);font-weight:800;line-height:1.55;letter-spacing:-.02em;
+  opacity:0;transform:translateY(-3px);transition:.3s var(--ease)}
+.dt-warn.on{opacity:1;transform:none}
+
+@media (max-width:1000px){
+  .dt-body{grid-template-columns:1fr;grid-template-rows:minmax(0,1.1fr) minmax(0,1fr)}
+  .dt-app{border-right:0;border-bottom:1px solid var(--line-s)}
+  .dt-opts.cards{grid-template-columns:1fr}
+}
+
+
+/* ═════ 외부 연결 실습 : 앱의 AI 튜터 패널 · 개발자 사이트 팝업 · 대화 시연 ═════ */
+.lk-tutor{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:11px;
+  padding:clamp(11px,1.4vh,16px) clamp(12px,1.2vw,18px);border-radius:12px;
+  background:#fff;border:1px solid rgba(15,20,26,.09)}
+.lk-av{width:34px;height:34px;border-radius:10px;background:#12294A;color:#fff;
+  display:grid;place-items:center;font-size:12px;font-weight:900;letter-spacing:-.02em}
+.lk-tutor b{display:block;font-size:clamp(12.5px,1vw,16px);font-weight:800;color:var(--ink)}
+.lk-tutor small{display:block;margin-top:2px;font-size:clamp(10px,.78vw,12.5px);
+  font-weight:600;color:var(--gray)}
+.lk-badge{padding:5px 11px;border-radius:999px;font-size:clamp(9.5px,.74vw,12px);font-weight:800;
+  background:#FBEFEE;color:#B3453C;transition:.45s var(--ease)}
+.dt[data-step="4"] .lk-badge{background:#E7F6F1;color:#0A7A5E}
+
+.lk-chat{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;
+  padding:clamp(11px,1.4vh,16px) clamp(12px,1.2vw,18px);border-radius:12px;
+  background:#fff;border:1px solid rgba(15,20,26,.09);
+  transition:border-color .5s var(--ease),box-shadow .5s var(--ease)}
+.dt[data-step="4"] .lk-chat{border-color:var(--teal-b);box-shadow:0 0 0 4px rgba(18,179,158,.13)}
+.lk-sugs{display:flex;flex-direction:column;gap:7px}
+.lk-sug{padding:8px 13px;border-radius:999px;background:#F4F6F8;border:1px solid var(--line-s);
+  font-size:clamp(10.5px,.82vw,13.5px);font-weight:700;color:var(--ink-2);align-self:flex-start;
+  transition:opacity .4s var(--ease)}
+.dt[data-step="4"] .lk-sugs{display:none}
+.lk-sim{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.lk-q,.lk-a{max-width:88%;padding:9px 13px;border-radius:12px;
+  font-size:clamp(10.5px,.85vw,14px);font-weight:700;line-height:1.6;
+  opacity:0;transform:translateY(8px);transition:.4s var(--ease-back)}
+.lk-q{align-self:flex-end;background:#EAF7F5;border:1px solid rgba(18,179,158,.3);color:var(--ink)}
+.lk-a{align-self:flex-start;background:#F4F6F8;border:1px solid var(--line-s);color:var(--ink-2)}
+.lk-q.on,.lk-a.on{opacity:1;transform:none}
+.lk-in{flex:none;display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:12px;
+  background:#F4F6F8;border:1px solid var(--line-s);
+  font-size:clamp(10.5px,.82vw,13.5px);font-weight:600;color:var(--gray-l);
+  transition:.45s var(--ease)}
+.dt[data-step="4"] .lk-in{background:#fff;border-color:var(--teal-b);color:var(--ink-2)}
+.lk-in s{margin-left:auto;width:28px;height:28px;border-radius:9px;flex:none;text-decoration:none;
+  background:#DDE3E8;color:#fff;display:grid;place-items:center;font-size:13px;transition:.45s var(--ease)}
+.dt[data-step="4"] .lk-in s{background:#12294A}
+
+/* 개발자 사이트 팝업 */
+.lk-modal{position:absolute;inset:0;z-index:20;display:grid;place-items:center;
+  background:rgba(15,20,26,.42);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  opacity:0;visibility:hidden;transition:.4s var(--ease)}
+.lk-modal.on{opacity:1;visibility:visible}
+.lk-win{width:min(92%,760px);border-radius:18px;overflow:hidden;background:var(--card);
+  box-shadow:0 34px 80px rgba(15,20,26,.42);transform:scale(.94) translateY(10px);
+  transition:transform .45s var(--ease-back)}
+.lk-modal.on .lk-win{transform:none}
+.lk-win-bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#E7EAEE;
+  border-bottom:1px solid var(--line-s)}
+.lk-win-bar i{width:9px;height:9px;border-radius:50%;background:#C2C8D0}
+.lk-win-bar span{margin-left:8px;font-size:13px;font-weight:600;color:var(--gray)}
+.lk-win-body{padding:clamp(28px,4vh,48px) clamp(24px,3vw,52px);text-align:center}
+.lk-win-body h4{font-size:clamp(18px,1.6vw,28px);font-weight:900;letter-spacing:-.04em;color:var(--ink)}
+.lk-win-body p{margin-top:10px;font-size:clamp(13px,1.05vw,17.5px);font-weight:600;color:var(--gray);line-height:1.65}
+.lk-key{margin-top:clamp(18px,2.4vh,28px);padding:15px 18px;border-radius:12px;background:#0F141A;
+  color:#7FD6C6;font-size:clamp(12.5px,1vw,16.5px);font-weight:700;letter-spacing:.02em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-issue{margin-top:clamp(20px,2.6vh,30px);padding:15px 34px;border-radius:13px;
+  background:var(--ink);color:#fff;font-size:clamp(14px,1.15vw,19px);font-weight:800;
+  letter-spacing:-.025em;animation:ccPulse 1.5s ease-in-out infinite}
+.lk-copied{margin-top:14px;font-size:clamp(12.5px,1vw,16px);font-weight:800;color:var(--teal);
+  opacity:0;transform:translateY(-4px);transition:.35s var(--ease)}
+.lk-copied.on{opacity:1;transform:none}
+
+
+
+/* ═════ 공유·운영 실습 : 사내 메신저 · 깃허브 팝업 ═════ */
+.sh-panel .cc-composer{opacity:.4;pointer-events:none}
+.ms-app{background:#EEF1F5}
+.ms-bar{flex:none;display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:#DCE3EC;border-bottom:1px solid rgba(15,20,26,.1);
+  font-size:clamp(10.5px,.8vw,13px);font-weight:700;color:var(--gray)}
+.ms-bar .ms-ico{width:16px;height:16px;border-radius:4px;background:#2C6EC4;color:#fff;
+  display:grid;place-items:center;font-size:9px;font-weight:900}
+.ms-bar em{margin-left:auto;font-style:normal;letter-spacing:.22em;color:var(--gray-l)}
+.ms-head{flex:none;display:grid;grid-template-columns:1fr auto;align-items:center;gap:11px;
+  padding:clamp(11px,1.4vh,16px) clamp(13px,1.3vw,20px);background:#fff;
+  border-bottom:1px solid rgba(15,20,26,.08)}
+.ms-who b{display:flex;align-items:center;gap:7px;
+  font-size:clamp(12px,.95vw,15.5px);font-weight:800;color:var(--ink)}
+.ms-who b s{width:9px;height:9px;border-radius:50%;background:#2FA55F;text-decoration:none;flex:none}
+.ms-who small{display:block;margin-top:2px;font-size:clamp(10px,.76vw,12.5px);font-weight:600;color:var(--gray)}
+.ms-head i{font-style:normal;letter-spacing:.3em;color:var(--gray-l);font-size:14px}
+
+.ms-body{flex:1;min-height:0;overflow:auto;padding:clamp(13px,1.7vh,20px) clamp(13px,1.3vw,20px);
+  display:flex;flex-direction:column;gap:clamp(9px,1.2vh,14px)}
+.ms-note{text-align:center;font-size:clamp(10.5px,.8vw,13px);font-weight:600;color:var(--gray)}
+.ms-date{display:flex;align-items:center;gap:11px;color:var(--gray-l);
+  font-size:clamp(10px,.76vw,12.5px);font-weight:700}
+.ms-date::before,.ms-date::after{content:"";flex:1;height:1px;background:rgba(15,20,26,.12)}
+.ms-msg{display:flex;flex-direction:column;gap:4px;max-width:82%;
+  opacity:0;transform:translateY(8px);transition:.45s var(--ease-back)}
+.ms-msg.them{align-self:flex-start}
+.ms-msg.me{align-self:flex-end;align-items:flex-end}
+.ms-msg.show,.ms-msg.on{opacity:1;transform:none}
+.ms-msg b{font-size:clamp(10px,.76vw,12.5px);font-weight:800;color:var(--gray)}
+.ms-msg p{padding:10px 14px;border-radius:12px;background:#fff;border:1px solid rgba(15,20,26,.09);
+  font-size:clamp(11px,.88vw,14.5px);font-weight:700;color:var(--ink-2);line-height:1.6;word-break:break-all}
+.ms-msg.me p{background:#FDF2A6;border-color:#EFE08A;color:var(--ink)}
+
+.ms-foot{flex:none;background:#fff;border-top:1px solid rgba(15,20,26,.1);
+  padding:clamp(10px,1.3vh,15px) clamp(13px,1.3vw,20px);display:flex;align-items:center;gap:11px}
+.ms-input{flex:1;min-width:0;font-size:clamp(11px,.88vw,14.5px);font-weight:700;color:var(--gray-l);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ms-input.typing{color:var(--ink)}
+.ms-input:empty::before{content:"메시지를 입력하세요";color:var(--gray-l)}
+.ms-send{flex:none;padding:8px 17px;border-radius:8px;background:#2C6EC4;color:#fff;
+  font-size:clamp(11px,.85vw,14px);font-weight:800}
+
+/* 깃허브 팝업 내부 */
+.sh-flow{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.2vh,14px);
+  margin-top:clamp(16px,2.2vh,26px)}
+.sh-flow .lk-issue{margin-top:0}
+.sh-flow .lk-issue:disabled{background:#DDE3E8;color:var(--gray-l);animation:none;cursor:default}
+.sh-done{font-size:clamp(12px,.95vw,16px);font-weight:800;color:var(--teal);
+  opacity:0;transform:translateY(-4px);transition:.35s var(--ease)}
+.sh-done.on{opacity:1;transform:none}
+.sh-load{display:flex;gap:7px;height:0;overflow:hidden;transition:.3s var(--ease)}
+.sh-load.on{height:12px}
+.sh-load i{width:9px;height:9px;border-radius:50%;background:var(--teal-b);
+  animation:shDot 1s ease-in-out infinite}
+.sh-load i:nth-child(2){animation-delay:.16s}
+.sh-load i:nth-child(3){animation-delay:.32s}
+@keyframes shDot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
+.sh-url{text-align:center;font-size:clamp(12.5px,1vw,16.5px);font-weight:800;color:var(--teal);
+  line-height:1.7;opacity:0;transform:translateY(-4px);transition:.4s var(--ease-back)}
+.sh-url.on{opacity:1;transform:none}
+.sh-url b{display:block;margin-top:4px;color:var(--ink);word-break:break-all}
+
+
+/* ═════ 02 : 헤드라인과 도식을 한 덩어리로 ═════
+   라벨(작게) → 문장(크게) → 구분 → 흐름. 두 열이 그대로 대비가 된다. */
+/* 대비의 핵심인 두 구절만 1.5배 — 나머지 문장은 그대로 둔다 */
+/* 1.5배는 첫 줄이 카드를 넘어 본문을 31px 까지 끌어내렸다.
+   1.2배로 낮추니 본문 40px · 강조 48px — 강조가 원래(53.6px 단일 크기)보다 커진다. */
+.jn-hi{color:var(--teal);font-size:1.2em;line-height:1.08;white-space:nowrap}
+.jn-hi i{font-style:italic}
+
+.fb{margin-top:clamp(16px,2.6vh,32px);display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:clamp(9px,1.1vw,18px);align-items:stretch;min-height:clamp(270px,39vh,410px)}
+/* 왼쪽에서 오른쪽으로 넘어간다는 방향을 가운데 화살표가 잡아 준다 */
+.fb-arrow{align-self:center;font-size:clamp(24px,2.6vw,46px);font-weight:900;color:var(--gray-l);
+  line-height:1}
+
+/* 오른쪽에 자리가 없어 결과는 아래로 — 두 축이 합쳐져 하나로 모인다 */
+.fb-sum{margin-top:clamp(12px,1.8vh,24px);display:flex;flex-direction:column;align-items:center;
+  gap:clamp(14px,2.2vh,26px)}
+/* 기둥에 빛이 흘러내리고 화살촉이 위아래로 숨 쉰다.
+   배경 위치를 움직이므로 overflow 를 걸 필요가 없어 화살촉이 잘리지 않는다. */
+.fb-sum s{position:relative;width:5px;height:clamp(30px,4.8vh,64px);border-radius:5px;
+  text-decoration:none;
+  background:
+    linear-gradient(180deg,rgba(18,179,158,0) 0%,var(--teal-b) 50%,rgba(18,179,158,0) 100%),
+    linear-gradient(rgba(18,179,158,.2),rgba(18,179,158,.2));
+  background-size:100% 46%,100% 100%;
+  background-repeat:no-repeat;
+  animation:fbFlow 1.5s linear infinite}
+@keyframes fbFlow{
+  from{background-position:0 -60%,0 0}
+  to{background-position:0 160%,0 0}
+}
+.fb-sum s::after{content:"";position:absolute;left:50%;bottom:-15px;
+  border:12px solid transparent;border-top-color:var(--teal);
+  filter:drop-shadow(0 4px 7px rgba(10,132,116,.4));
+  animation:fbTip 1.5s var(--ease) infinite}
+@keyframes fbTip{
+  0%,100%{transform:translateX(-50%) translateY(-4px)}
+  50%{transform:translateX(-50%) translateY(4px)}
+}
+.fb-sum b{padding:clamp(15px,2.2vh,26px) clamp(52px,6vw,110px);border-radius:999px;
+  background:var(--teal);color:#fff;letter-spacing:-.045em;
+  font-size:clamp(25px,2.92vw,49px);font-weight:900;font-style:italic;
+  box-shadow:0 0 0 6px rgba(18,179,158,.14),0 16px 40px rgba(10,132,116,.4);
+  animation:fbSum 2.6s var(--ease) infinite}
+@keyframes fbSum{
+  0%,100%{box-shadow:0 0 0 6px rgba(18,179,158,.14),0 16px 40px rgba(10,132,116,.4)}
+  50%{box-shadow:0 0 0 13px rgba(18,179,158,.06),0 16px 40px rgba(10,132,116,.4)}
+}
+.fb-c{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;
+  gap:clamp(12px,2vh,26px);
+  padding:clamp(26px,4.2vh,54px) clamp(18px,1.7vw,30px);border-radius:22px;
+  background:var(--card);border:1px solid var(--line-s);box-shadow:var(--sh-s);
+  transition:transform .35s var(--ease-back),box-shadow .35s var(--ease),border-color .3s var(--ease)}
+.fb-c[data-fb="back"]{border-color:var(--teal-b);box-shadow:0 0 0 4px rgba(18,179,158,.11),var(--sh-m)}
+/* 마우스를 얹은 쪽이 앞으로 나온다 */
+.fb-c:hover{z-index:3;transform:scale(1.04);box-shadow:var(--sh-l)}
+.fb-c[data-fb="back"]:hover{box-shadow:0 0 0 5px rgba(18,179,158,.16),var(--sh-l)}
+.fb-k{font-size:clamp(10.5px,.82vw,13.5px);font-weight:900;letter-spacing:.15em;color:var(--gray-l)}
+.fb-c[data-fb="back"] .fb-k{color:var(--teal)}
+.fb-t{margin:0;color:var(--ink-2);
+  font-size:clamp(22px,3.25vw,52px);font-weight:900;letter-spacing:-.052em;line-height:1.2}
+.fb-sub{margin:0;padding-top:clamp(13px,2vh,24px);border-top:1px solid var(--line-s);
+  font-size:clamp(14px,1.57vw,28px);font-weight:900;letter-spacing:-.04em;color:var(--gray)}
+.fb-c[data-fb="back"] .fb-sub{color:var(--teal)}
+/* 칩(li>b) + 화살표(li::after). 줄바꿈돼도 흐름이 끊기지 않는다 */
+/* 4단계가 한 줄에 들어가야 흐름으로 읽힌다 — 줄바꿈을 막고 여백을 조인다 */
+.fb-flow{margin:0;display:flex;flex-wrap:nowrap;
+  align-items:center;gap:clamp(4px,.5vw,8px)}
+.fb-flow li{display:flex;align-items:center;gap:clamp(4px,.5vw,8px);min-width:0}
+.fb-flow li b{display:block;white-space:nowrap;
+  padding:clamp(7px,1vh,11px) clamp(8px,.8vw,13px);
+  border-radius:9px;background:#F4F6F8;border:1px solid var(--line-s);
+  font-size:clamp(10px,.8vw,13px);font-weight:800;letter-spacing:-.035em;color:var(--ink-2)}
+.fb-c[data-fb="back"] .fb-flow li b{background:#EAF7F5;border-color:rgba(18,179,158,.3);color:var(--ink)}
+.fb-flow li:not(:last-child)::after{content:"→";color:var(--gray-l);font-weight:900;
+  font-size:clamp(10px,.82vw,13px)}
+
+/* ═════ 09 이후 교육 ═════ */
+.nx-tl5{margin-top:clamp(13px,2vh,24px)}
+#next .tracks{margin-top:clamp(14px,2.2vh,26px)}
+#next .tr{padding:clamp(15px,2.2vh,26px) clamp(16px,1.6vw,28px)}
+.nx-tl5 .tl-row{grid-template-columns:repeat(5,minmax(0,1fr))}
+.nx-note{margin-top:clamp(14px,2.2vh,26px);font-size:clamp(10.5px,.84vw,13.5px);
+  font-weight:600;color:var(--gray);line-height:1.6}
+.nx-note b{font-weight:800;color:var(--ink-2)}
+
+@media (max-width:900px){
+  .fb{grid-template-columns:1fr}
+  .fb-arrow{transform:rotate(90deg);justify-self:center}
+  .fb-flow{flex-wrap:wrap}
 }
 
 /* ═════ 반응형 ═════ */
@@ -741,12 +1049,6 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 </div>
 
 
-<div class="nav" role="group" aria-label="장표 이동">
-  <button id="navPrev" aria-label="이전 단계">‹</button>
-  <span class="beat"><b id="beatNow">1</b> / <span id="beatAll">14</span></span>
-  <button id="navNext" aria-label="다음 단계">›</button>
-</div>
-
 <nav class="toc" id="toc" aria-label="목차" aria-hidden="true">
   <button class="menubtn x" id="tocClose">닫기</button>
   <a href="#journey"><em>02</em>전체 여정<span>6월 → 12월</span></a>
@@ -767,15 +1069,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
     <div class="cv-head">
       <div class="eyebrow" data-rv="fade"><s></s>본부장급 리더 AI 교육 · 2차</div>
       <h1 class="t-hero cv-title" data-rv style="--d:90ms">
-        쏟아지는 질문들,<br>
-        바이브 코딩의 <u>‘구조’</u>를<br>
-        알면 풀립니다.
+        바이브코딩,<br>
+        <u>목업 화면</u>에서 <u><i>진정한 업무 도구</i></u>로<br>
+        진화시키려면?
       </h1>
-      <div class="cv-keys" data-rv style="--d:150ms">(데이터 / 외부연결 / 공유·운영)</div>
+      <div class="cv-keys" data-rv style="--d:150ms">데이터 / 외부연결 / 공유·운영</div>
       <p class="lead cv-lead" data-rv style="--d:200ms;margin-top:clamp(16px,2.6vh,30px)">
-        영어 학습앱을 만들며 우리는 <b>‘단순한 화면’</b>과 <b>‘실제 업무 도구’</b>의 차이를 경험했습니다.<br>
-        다듬을수록 쏟아지는 질문들을 해결하기 위해, 오늘은 개발이 아닌 <b>‘구조’</b>에 집중합니다.<br>
-        이제 <b>3가지 관점(데이터 / 외부연결 / 공유·운영)</b>으로 우리 조직의 실무를 새롭게 바라봅니다.
+        6월에는 자연어로 AI에게 지시하여 <b>영어 학습앱 화면</b>을 만들었습니다.<br>
+        오늘은 그 화면에 <b>데이터를 저장하고, 외부 기능을 연결하고, 여러 사람이 함께 사용하도록</b> 확장하는 과정을 알아봅니다.
       </p>
     </div>
   </div>
@@ -786,30 +1087,41 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 <section class="sec bg-white" id="journey" data-chapter="02 전체 여정">
   <div class="wrap">
     <div class="eyebrow" data-rv="fade"><s></s>바이브코딩 전체 과정</div>
-    <h2 class="t-big" data-rv style="--d:80ms;margin-top:clamp(12px,2vh,22px)">
-      영어 학습앱에서 익힌 <span style="color:var(--teal)">원리</span>로<br><span class="dim">현업을 읽어내는 <span style="color:var(--teal)">관점</span>을 얻습니다.</span>
-    </h2>
+    <div class="fb" data-rv style="--d:120ms">
+      <article class="fb-c" data-fb="front">
+        <div class="fb-k">지난 시연 · 6월</div>
+        <h2 class="fb-t">
+          <span class="jn-hi">눈에 보이는 <i>‘화면’</i></span><br>을 그리는 시간
+        </h2>
+        <div class="fb-sub">프론트엔드</div>
+        <ol class="fb-flow">
+          <li><b>기획 의도 설명</b></li>
+          <li><b>코드 생성 요청</b></li>
+          <li><b>결과 화면 확인</b></li>
+          <li><b>세부 기능 수정</b></li>
+        </ol>
+      </article>
 
-    <div class="tl" data-rv style="--d:170ms">
-      <div class="tl-track"><i id="tlFill"></i></div>
-      <div class="tl-row">
-        <div class="tl-c done"><div class="tl-m">6월</div><div class="tl-t">바이브코딩 시연</div><div class="tl-s">직접 만들어보기</div></div>
-        <div class="tl-c now"><div class="tl-m">8월</div><div class="tl-t">코딩 단계 이해</div><div class="tl-s">오늘</div></div>
-        <div class="tl-c"><div class="tl-m">9월</div><div class="tl-t">데이터 축적</div><div class="tl-s">상세 시연</div></div>
-        <div class="tl-c"><div class="tl-m">10월</div><div class="tl-t">외부 연결</div><div class="tl-s">상세 시연</div></div>
-        <div class="tl-c"><div class="tl-m">11월</div><div class="tl-t">공유 · 운영</div><div class="tl-s">상세 시연</div></div>
-        <div class="tl-c"><div class="tl-m">12월</div><div class="tl-t">필요 기능 확인</div><div class="tl-s">본부 업무 적용</div></div>
-      </div>
-      <div class="tl-bands">
-        <div class="tl-band a">영어 학습 프로그램<small>6월에 만든 학습기를 예제 삼아 세 단계를 익힙니다</small></div>
-        <div class="tl-band b">일반 업무 프로그램<small>본부 업무로 전환</small></div>
-      </div>
+      <div class="fb-arrow" aria-hidden="true">+</div>
+
+      <article class="fb-c" data-fb="back">
+        <div class="fb-k">오늘 교육 · 8월</div>
+        <h2 class="fb-t">
+          <span class="jn-hi">눈에 보이지 않는 <i>‘구조’</i></span><br>를 파악하는 시간
+        </h2>
+        <div class="fb-sub">백엔드</div>
+        <ol class="fb-flow">
+          <li><b>데이터 축적</b></li>
+          <li><b>외부 기능 연동</b></li>
+          <li><b>권한 설정 및 배포</b></li>
+        </ol>
+      </article>
     </div>
 
-    <p class="lead" data-rv style="--d:250ms;margin-top:clamp(18px,3vh,34px)">
-      9 · 10 · 11월은 <b>세 가지 원리</b>를 단계별로 하나씩 배우고 시연합니다.<br>
-      12월에는 영어 학습앱이 아닌, <b>각 본부의 실제 업무</b>에서 무엇이 필요한지 함께 읽어냅니다.
-    </p>
+    <div class="fb-sum" data-rv style="--d:250ms">
+      <s aria-hidden="true"></s>
+      <b>진정한 업무 도구</b>
+    </div>
   </div>
 </section>
 
@@ -822,10 +1134,10 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
         <h2 class="t-mid">경영진용 영어 학습 튜터,<br><span class="dim">이렇게 만들었습니다.</span></h2>
       </div>
       <ol class="rc-steps">
-        <li class="rc-step" data-i="0"><em>01</em><h4>프롬프트 입력</h4><p>대화창을 눌러 무엇을 만들지 적습니다</p></li>
-        <li class="rc-step" data-i="1"><em>02</em><h4>코딩 요청</h4><p>화살표 버튼을 눌러 작성을 요청합니다</p></li>
-        <li class="rc-step" data-i="2"><em>03</em><h4>결과 확인</h4><p>만들어진 화면이 그 자리에서 열립니다</p></li>
-        <li class="rc-step" data-i="3"><em>04</em><h4>수정 지시</h4><p>본문 글씨를 키우려고 다시 지시합니다</p></li>
+        <li class="rc-step" data-i="0"><em>01</em><h4>기획 의도 설명</h4><p>대화창을 눌러 무엇을 만들지 적습니다</p></li>
+        <li class="rc-step" data-i="1"><em>02</em><h4>코드 생성 요청</h4><p>화살표 버튼을 눌러 작성을 요청합니다</p></li>
+        <li class="rc-step" data-i="2"><em>03</em><h4>결과 화면 확인</h4><p>만들어진 화면이 그 자리에서 열립니다</p></li>
+        <li class="rc-step" data-i="3"><em>04</em><h4>세부 기능 수정</h4><p>본문 글씨를 키우려고 다시 지시합니다</p></li>
       </ol>
     </div>
 
@@ -902,13 +1214,13 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
         <div class="lane" style="--cat:1;--lc:var(--c-data);--lc-bg:#FAF2E4;--ld:.05s"><em>9월</em><b>데이터 축적</b><span>기억하고 쌓이게 하려면</span></div>
         <div class="lane" style="--cat:2;--lc:var(--c-link);--lc-bg:#E8F6F3;--ld:.26s"><em>10월</em><b>외부 연결</b><span>AI의 능력을 끌어오려면</span></div>
         <div class="lane" style="--cat:3;--lc:var(--c-share);--lc-bg:#ECEFFC;--ld:.48s"><em>11월</em><b>공유 · 운영</b><span>모두가 쓰게 하려면</span></div>
-        <div class="q" data-from="0" style="--gr:1;--cat:1;--w:0;--lc:var(--c-data);--jx:24vw;--sr:-1.6deg;--ss:.95;--i:0">내가 가진 자료를 기반으로 교재를 만들 수 있나?</div>
-        <div class="q" data-from="1" style="--gr:2;--cat:1;--w:0;--lc:var(--c-data);--jx:-13vw;--sr:1.5deg;--ss:.97;--i:1">월별 학습 기록을 모아서 보게 하고 싶어.</div>
+        <div class="q hi" data-from="0" style="--gr:1;--cat:1;--w:0;--lc:var(--c-data);--jx:24vw;--sr:-1.6deg;--ss:.95;--i:0">개인 학습 데이터를 기록 정리하고 싶어.</div>
+        <div class="q" data-from="1" style="--gr:2;--cat:1;--w:0;--lc:var(--c-data);--jx:-18vw;--sr:1.5deg;--ss:.97;--i:1">내가 가진 자료를 기반으로 교재를 만들 수 있나?</div>
         <div class="q" data-from="2" style="--gr:3;--cat:1;--w:0;--lc:var(--c-data);--jx:30vw;--sr:1.2deg;--ss:.93;--i:2">어제 입력한 내용이 왜 사라졌지?</div>
-        <div class="q" data-from="3" style="--gr:4;--cat:2;--w:1;--lc:var(--c-link);--jx:8vw;--sr:-1.3deg;--ss:.96;--i:3">영어 발음을 읽어 주는 기능을 넣고 싶어.</div>
-        <div class="q" data-from="4" style="--gr:5;--cat:2;--w:1;--lc:var(--c-link);--jx:26vw;--sr:-1.7deg;--ss:1;--i:4">문법을 질문하면 AI가 알아서 대답하게 할 수 있나?</div>
+        <div class="q hi" data-from="3" style="--gr:4;--cat:2;--w:1;--lc:var(--c-link);--jx:8vw;--sr:-1.3deg;--ss:.96;--i:3">AI 대화창에 질문했는데 답변을 안하네?</div>
+        <div class="q" data-from="4" style="--gr:5;--cat:2;--w:1;--lc:var(--c-link);--jx:26vw;--sr:-1.7deg;--ss:1;--i:4">영어 발음을 읽어 주는 기능을 넣고 싶어.</div>
         <div class="q" data-from="5" style="--gr:6;--cat:2;--w:1;--lc:var(--c-link);--jx:-16vw;--sr:1.6deg;--ss:.94;--i:5">당일 CNN 기사를 불러와 교재로 쓰고 싶어.</div>
-        <div class="q" data-from="6" style="--gr:7;--cat:3;--w:2;--lc:var(--c-share);--jx:18vw;--sr:1.4deg;--ss:.98;--i:6">직원들과 공유하려면 파일을 일일이 보내야 하나?</div>
+        <div class="q hi" data-from="6" style="--gr:7;--cat:3;--w:2;--lc:var(--c-share);--jx:18vw;--sr:1.4deg;--ss:.98;--i:6">직원들과 공유하려면 파일을 일일이 보내야 하나?</div>
         <div class="q" data-from="7" style="--gr:8;--cat:3;--w:2;--lc:var(--c-share);--jx:-14vw;--sr:-1.5deg;--ss:.95;--i:7">코드를 수정했는데, 파일을 새로 공유해야 하나?</div>
         <div class="q" data-from="8" style="--gr:9;--cat:3;--w:2;--lc:var(--c-share);--jx:33vw;--sr:-1.8deg;--ss:.92;--i:8">특정인만 볼 수 있게 하고 싶어.</div>
         <div class="qbox" style="--cat:1;--lc:var(--c-data);--ld:.05s"></div>
@@ -928,10 +1240,10 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
         <div class="pl-month">9월 · 첫 번째</div>
         <div class="pl-head">
           <h2 class="t-big pl-name">데이터 축적</h2>
-          <p class="pl-def">프로그램에 <u>기억창고</u>를 달아주는 일</p>
+          <p class="pl-def">입력한 내용을 <u>저장하고 다시 쓰는 구조</u></p>
         </div>
       </div>
-      <p class="pl-tag">한 번 쓴 것을, 계속 기억하게</p>
+      <p class="pl-tag">기록이 남아야 다음 사용으로 이어집니다</p>
     </div>
 
     <div class="pl-cols">
@@ -953,14 +1265,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
           </div>
           <div class="ba-body">
             <ul class="ba-face" data-f="before">
-              <li><s>—</s><span>어제 학습한 내용이 <b>매번 초기화됨</b></span></li>
-              <li><s>—</s><span>누가 어디까지 했는지 알 수 없음</span></li>
-              <li><s>—</s><span>누구에게나 똑같은 답변만 제공</span></li>
+              <li><s>—</s><span>새로고침하면 <b>학습 기록이 사라짐</b></span></li>
+              <li><s>—</s><span>누가 어디까지 했는지 확인하기 어려움</span></li>
+              <li><s>—</s><span>지난 기록을 활용한 맞춤 기능이 어려움</span></li>
             </ul>
             <ul class="ba-face" data-f="after">
-              <li><s>→</s><span>학습 이력이 남아 <b>이어서 학습</b></span></li>
-              <li><s>→</s><span><b>개인별 학습 현황 관리</b></span></li>
-              <li><s>→</s><span>쌓인 자료를 근거로 한 <b>맞춤 답변</b></span></li>
+              <li><s>→</s><span>지난 학습에서 <b>이어서 시작</b></span></li>
+              <li><s>→</s><span><b>사용자별 진도 · 저장 내역 관리</b></span></li>
+              <li><s>→</s><span>쌓인 기록을 활용한 <b>맞춤 기능 구현 가능</b></span></li>
             </ul>
           </div>
         </div>
@@ -970,33 +1282,116 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 </section>
 
 
-<!-- ═══════════ 데이터 · 질문력 쪽지시험 ═══════════ -->
-<section class="sec qz" id="qz-data" data-chapter="05 데이터 축적">
+
+<!-- ═══════════ 05-1 데이터 축적 실습 ═══════════ -->
+<section class="sec dt" id="t-data" data-step="1" style="--pc:var(--c-data)" data-chapter="05 데이터 축적">
   <div class="wrap">
-    <article class="qz-card" data-qz data-rv="scale">
-      <div class="qz-pin">📌</div>
-      <p class="qz-q">Q. 데이터 단계에서 역할(사람 · AI)을 알맞게 연결해보세요.</p>
-      <div class="qz-rule"></div>
-
-      <div class="qz-board">
-        <ul class="qz-side qz-left">
-          <li class="qz-item" data-key="human"><b>사람</b><span>판단 · 책임</span></li>
-          <li class="qz-item" data-key="ai"><b>AI</b><span>수행 · 구현</span></li>
-        </ul>
-        <div class="qz-mark">❓</div>
-        <ul class="qz-side qz-right">
-          <li class="qz-item" data-key="ai">실무자가 제각각 작성한 현장 텍스트를 정형화된 규격으로 자동 분류하기</li>
-          <li class="qz-item" data-key="human">우리 본부에서 남기고 추적해야 할 &lsquo;핵심 지표(데이터)&rsquo; 정의하기</li>
-        </ul>
-        <svg class="qz-wires"></svg>
+    <div class="rc-top dt-head">
+      <div class="rc-head">
+        <div class="eyebrow" data-rv="fade"><s></s>데이터 축적 · 직접 해보기</div>
+        <h2 class="t-mid" data-rv style="--d:80ms;margin-top:clamp(8px,1.4vh,16px)">
+          학습 기록을 <span style="color:var(--teal)">쌓이게</span> 합니다.
+        </h2>
       </div>
+      <ol class="rc-steps" id="dtProg">
+        <li class="rc-step"><em>01</em><h4>문제 확인</h4><p>무엇이 불편한지 짚습니다</p></li>
+        <li class="rc-step"><em>02</em><h4>필요한 데이터 확인</h4><p>무엇을 남길지 정합니다</p></li>
+        <li class="rc-step"><em>03</em><h4>데이터 서버 연결</h4><p>어디에 저장할지 정합니다</p></li>
+        <li class="rc-step"><em>04</em><h4>결과 확인</h4><p>기록이 쌓이는지 봅니다</p></li>
+      </ol>
+    </div>
 
-      <div class="qz-foot">
-        <span class="qz-done">정답입니다 — 무엇을 할지는 사람이 정하고, 만드는 일은 AI가 맡습니다.</span>
-      </div>
-    </article>
+    <div class="rc-stage dt-rc">
+      <article class="rc-panel cc dt-panel" id="dt" data-rv="scale" style="--d:150ms">
+        <div class="rc-bar"><i></i><i></i><i></i><span>claude.ai — 영어 학습 튜터</span>
+          <div class="cc-tools">
+            <button class="cc-nav" id="dtPrev" type="button" aria-label="이전 단계">‹</button>
+            <button class="cc-nav" id="dtNext" type="button" aria-label="다음 단계">›</button>
+            <button class="cc-again" id="dtAgain" type="button">처음부터 ↺</button>
+          </div>
+        </div>
+
+        <div class="dt-body">
+          <!-- 좌 : 앱 미리보기 -->
+          <div class="dt-app">
+            <div class="dt-hero">
+              <b>Executive English Daily</b>
+              <span>글로벌 비즈니스 영어 · 매일 학습</span>
+            </div>
+            <div class="dt-app-body">
+              <div class="dt-row"><b>오늘의 학습</b><span>33%</span></div>
+              <div class="dt-bar"><i></i></div>
+              <ul class="dt-list">
+                <li class="on"><s>✓</s><em>독해</em><small>외신 기사 정독 + 어휘</small></li>
+                <li><s></s><em>듣기</em><small>기사 대화 음원 청취</small></li>
+                <li><s></s><em>말하기</em><small>섀도잉 &amp; 발화 연습</small></li>
+              </ul>
+
+              <div class="dt-log">
+                <div class="dt-log-h">학습 기록</div>
+                <div class="dt-empty" id="dtEmpty">현재, 데이터 연동이 되지 않아<br>학습 기록이 남지 않습니다.</div>
+                <div class="dt-dash" id="dtDash">
+                  <table class="dt-tbl">
+                    <tr><th>날짜</th><th>학습</th><th>점수</th></tr>
+                    <tr><td>08.25</td><td>독해 · 듣기</td><td>82</td></tr>
+                    <tr><td>08.24</td><td>말하기</td><td>76</td></tr>
+                    <tr><td>08.23</td><td>독해</td><td>91</td></tr>
+                  </table>
+                  <div class="dt-chart">
+                    <i style="--h:46%"></i><i style="--h:68%"></i><i style="--h:54%"></i>
+                    <i style="--h:82%"></i><i style="--h:73%"></i>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <button class="dt-mark" id="dtMark" type="button"><b>1</b>개인 학습 데이터를 기록 정리하고 싶어</button>
+            <div class="dt-toast" id="dtToast">데이터 연결 성공</div>
+          </div>
+
+          <!-- 우 : Claude 채팅 -->
+          <div class="dt-chat">
+            <div class="dt-thread" id="dtThread">
+              <div class="cc-msg a dt-ask" id="dtAsk">
+                데이터 관리를 위해 아래 사항을 정해주세요.
+                <div class="dt-q">
+                  <p class="dt-q-t">1. 관리할 데이터를 선택하세요</p>
+                  <div class="dt-opts">
+                    <button class="dt-pill" type="button" data-block="보안담당자와 협의가 필요합니다">인사 정보</button>
+                    <button class="dt-pill" type="button" data-pick="log">학습 기록</button>
+                    <button class="dt-pill" type="button" data-pick="score">시험 점수</button>
+                  </div>
+                  <p class="dt-warn"></p>
+                </div>
+                <div class="dt-q">
+                  <p class="dt-q-t">2. 데이터를 저장할 공간을 선택하세요</p>
+                  <div class="dt-opts cards">
+                    <button class="dt-card" type="button" data-block="외부 클라우드 서비스는 보안담당자와 협의가 필요합니다"><b>슈퍼베이스</b><span>외부 클라우드 DB</span></button>
+                    <button class="dt-card" type="button" data-block="공유 목적으로는 권장하지 않습니다"><b>본인 PC</b><span>로컬 저장</span></button>
+                    <button class="dt-card" type="button" data-pick="teams"><b>팀즈</b><span>쉐어포인트</span></button>
+                  </div>
+                  <p class="dt-warn"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="cc-composer">
+              <button class="cc-field" id="dtField" type="button">
+                <span class="cc-ph" id="dtPh">Claude에게 무엇이든 물어보세요</span><span class="cc-text" id="dtText"></span><i class="cc-caret" aria-hidden="true"></i>
+              </button>
+              <button class="cc-send" id="dtSend" type="button" aria-label="보내기" disabled>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              </button>
+              <button class="cc-coach" id="dtCoach" type="button"><b>3</b>전송 버튼을 눌러 지시합니다</button>
+            </div>
+          </div>
+        </div>
+
+      </article>
+    </div>
   </div>
 </section>
+
 <!-- ═══════════ 06 외부 연결 (10월) ═══════════ -->
 <section class="sec pillar" id="p-link" style="--pc:var(--c-link)" data-chapter="06 외부 연결">
   <div class="wrap">
@@ -1005,17 +1400,17 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
         <div class="pl-month">10월 · 두 번째</div>
         <div class="pl-head">
           <h2 class="t-big pl-name">외부 연결</h2>
-          <p class="pl-def">필요한 능력을 <u>끌어와 쓰는 것</u></p>
+          <p class="pl-def">프로그램 밖의 AI · 정보 · 기능을 <u>연결해</u> 쓰는 구조</p>
         </div>
       </div>
-      <p class="pl-tag">세상의 능력을, 내 프로그램에</p>
+      <p class="pl-tag">필요한 기능은 외부 서비스와 연결해 확장합니다</p>
     </div>
 
     <div class="pl-cols">
       <div data-rv="left" style="--d:90ms">
         <div class="qlabel"><s>✳</s>어떻게 해야 하나?</div>
         <ol class="how-steps">
-          <li><span>앱에 필요한 <b>외부 능력</b>(AI 문법 질문, CNN 기사 수집 등)을 정의한다.</span></li>
+          <li><span>앱에 필요한 <b>외부 능력</b>(AI 문법 질문, CNN 기사 수집 등)을 탐색한다.</span></li>
           <li><span>해당 기능을 제공하는 외부 서비스에서 <b>API Key</b>를 발급받는다.</span></li>
           <li><span>AI에게 API Key를 전달하여 <b>외부 기능의 연동</b>을 지시한다.</span></li>
         </ol>
@@ -1030,14 +1425,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
           </div>
           <div class="ba-body">
             <ul class="ba-face" data-f="before">
-              <li><s>—</s><span>처음 만들 때 <b>미리 써 둔 답변</b>만 반복</span></li>
-              <li><s>—</s><span>기사와 데이터가 그날 내용으로 바뀌지 않음</span></li>
-              <li><s>—</s><span>끝나도 아무 일도 일어나지 않음</span></li>
+              <li><s>—</s><span>미리 넣어 둔 설명과 예문만 표시</span></li>
+              <li><s>—</s><span>뉴스 · 정보가 <b>최신 내용으로 바뀌지 않음</b></span></li>
+              <li><s>—</s><span><b>프로그램 안에 만든 기능만 사용 가능</b></span></li>
             </ul>
             <ul class="ba-face" data-f="after">
-              <li><s>→</s><span><b>진짜 대화하는 AI 튜터</b></span></li>
-              <li><s>→</s><span>다른 기능도 <b>가져다 붙이기</b></span></li>
-              <li><s>→</s><span><b>알아서 알림</b></span></li>
+              <li><s>→</s><span>사용자 질문에 <b>AI가 실시간으로 답변</b></span></li>
+              <li><s>→</s><span>최신 정보를 자동으로 불러와 활용</span></li>
+              <li><s>→</s><span>필요한 외부 기능을 추가로 연결 가능</span></li>
             </ul>
           </div>
         </div>
@@ -1047,33 +1442,113 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 </section>
 
 
-<!-- ═══════════ API 연결 · 질문력 쪽지시험 ═══════════ -->
-<section class="sec qz" id="qz-link" data-chapter="06 외부 연결">
+
+<!-- ═══════════ 06-1 외부 연결 실습 ═══════════ -->
+<section class="sec dt" id="t-link" data-step="1" style="--pc:var(--c-link)" data-chapter="06 외부 연결">
   <div class="wrap">
-    <article class="qz-card" data-qz data-rv="scale">
-      <div class="qz-pin">📌</div>
-      <p class="qz-q">Q. API 연결 단계에서 역할(사람 · AI)을 알맞게 연결해보세요.</p>
-      <div class="qz-rule"></div>
-
-      <div class="qz-board">
-        <ul class="qz-side qz-left">
-          <li class="qz-item" data-key="human"><b>사람</b><span>판단 · 책임</span></li>
-          <li class="qz-item" data-key="ai"><b>AI</b><span>수행 · 구현</span></li>
-        </ul>
-        <div class="qz-mark">❓</div>
-        <ul class="qz-side qz-right">
-          <li class="qz-item" data-key="ai">외부 데이터를 실시간으로 끌어와 내부 양식에 맞춘 초안 작성하기</li>
-          <li class="qz-item" data-key="human">우리 본부 업무와 시너지를 낼 수 있는 외부 API 데이터(법규 · 공시 등) 선별하기</li>
-        </ul>
-        <svg class="qz-wires"></svg>
+    <div class="rc-top dt-head">
+      <div class="rc-head">
+        <div class="eyebrow" data-rv="fade"><s></s>외부 연결 · 직접 해보기</div>
+        <h2 class="t-mid" data-rv style="--d:80ms;margin-top:clamp(8px,1.4vh,16px)">
+          <span style="color:var(--teal)">AI 튜터 기능</span>을 구현합니다.
+        </h2>
       </div>
+      <ol class="rc-steps" id="lkProg">
+        <li class="rc-step"><em>01</em><h4>문제 확인</h4><p>무엇이 안 되는지 짚습니다</p></li>
+        <li class="rc-step"><em>02</em><h4>외부 기능 선택</h4><p>어떤 능력을 끌어올지 정합니다</p></li>
+        <li class="rc-step"><em>03</em><h4>API 키 발급</h4><p>쓸 수 있는 권한을 받아옵니다</p></li>
+        <li class="rc-step"><em>04</em><h4>연결 확인</h4><p>실제로 답하는지 봅니다</p></li>
+      </ol>
+    </div>
 
-      <div class="qz-foot">
-        <span class="qz-done">정답입니다 — 무엇을 할지는 사람이 정하고, 만드는 일은 AI가 맡습니다.</span>
-      </div>
-    </article>
+    <div class="rc-stage dt-rc">
+      <article class="rc-panel cc dt-panel" id="lk" data-rv="scale" style="--d:150ms">
+        <div class="rc-bar"><i></i><i></i><i></i><span>claude.ai — 영어 학습 튜터</span>
+          <div class="cc-tools">
+            <button class="cc-nav" id="lkPrev" type="button" aria-label="이전 단계">‹</button>
+            <button class="cc-nav" id="lkNext" type="button" aria-label="다음 단계">›</button>
+            <button class="cc-again" id="lkAgain" type="button">처음부터 ↺</button>
+          </div>
+        </div>
+
+        <div class="dt-body">
+          <!-- 좌 : 앱 미리보기 -->
+          <div class="dt-app">
+            <div class="dt-hero">
+              <b>Executive English Daily</b>
+              <span>글로벌 비즈니스 영어 · 매일 학습</span>
+            </div>
+            <div class="dt-app-body">
+              <div class="lk-tutor">
+                <span class="lk-av">AI</span>
+                <span><b>AI 영어 튜터</b><small>오늘 학습 내용 기반 1:1 코칭</small></span>
+                <span class="lk-badge" id="lkBadge">연결 안됨</span>
+              </div>
+
+              <div class="lk-chat">
+                <div class="lk-sugs">
+                  <span class="lk-sug">이 기사 핵심을 한 문장으로 요약해줘</span>
+                  <span class="lk-sug">오늘 표현 중 회의에서 바로 쓸 3개 추천해줘</span>
+                  <span class="lk-sug">이 문장 더 정중하게 바꾸면?</span>
+                  <span class="lk-sug">발음이 어려운 단어 팁 알려줘</span>
+                </div>
+                <div class="lk-sim">
+                  <p class="lk-q" id="lkSimQ"></p>
+                  <p class="lk-a" id="lkSimA"></p>
+                </div>
+                <div class="lk-in">영어 학습에 대해 무엇이든 물어보세요…<s>➤</s></div>
+              </div>
+            </div>
+            <button class="dt-mark" id="lkMark" type="button"><b>1</b>AI 대화창에 질문했는데 답변을 안 하네?</button>
+            <div class="dt-toast" id="lkToast">AI API 연결 성공</div>
+          </div>
+
+          <!-- 우 : Claude 채팅 -->
+          <div class="dt-chat">
+            <div class="dt-thread" id="lkThread">
+              <div class="cc-msg a dt-ask" id="lkAsk">
+                진짜 대화하는 AI 튜터를 만들려면 외부 AI의 능력을 끌어와야 합니다. 필요한 외부 기능을 선택하세요.
+                <div class="dt-q">
+                  <div class="dt-opts">
+                    <button class="dt-pill" type="button" data-block="AI 챗봇 서비스에 적합하지 않습니다">기상청 API</button>
+                    <button class="dt-pill" type="button" data-block="AI 챗봇 서비스에 적합하지 않습니다">지도 API</button>
+                    <button class="dt-pill" type="button" data-pick="ai">AI API</button>
+                  </div>
+                  <p class="dt-warn"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="cc-composer">
+              <button class="cc-field" id="lkField" type="button">
+                <span class="cc-ph" id="lkPh">Claude에게 무엇이든 물어보세요</span><span class="cc-text" id="lkText"></span><i class="cc-caret" aria-hidden="true"></i>
+              </button>
+              <button class="cc-send" id="lkSend" type="button" aria-label="보내기" disabled>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              </button>
+              <button class="cc-coach" id="lkCoach" type="button"><b>3</b>전송 버튼을 눌러 지시합니다</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 개발자 사이트 팝업 -->
+        <div class="lk-modal" id="lkModal">
+          <div class="lk-win">
+            <div class="lk-win-bar"><i></i><i></i><i></i><span>console.anthropic.com — API Keys</span></div>
+            <div class="lk-win-body">
+              <h4>Claude API 키 발급</h4>
+              <p>외부 AI의 능력을 내 프로그램에서 쓰려면<br>사용 권한(Key)을 먼저 받아야 합니다.</p>
+              <div class="lk-key">sk-ant-api03-••••••••••••••••••••••••</div>
+              <button class="lk-issue" id="lkIssue" type="button">클로드 API 발급</button>
+              <p class="lk-copied" id="lkCopied">API Key가 복사되었습니다</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
+
 <!-- ═══════════ 07 공유 · 운영 (11월) ═══════════ -->
 <section class="sec bg-white pillar" id="p-share" style="--pc:var(--c-share)" data-chapter="07 공유·운영">
   <div class="wrap">
@@ -1107,14 +1582,14 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
           </div>
           <div class="ba-body">
             <ul class="ba-face" data-f="before">
-              <li><s>—</s><span>HTML 파일을 <b>매번 메일로 보내고</b> 각자 실행</span></li>
-              <li><s>—</s><span>코드를 고치면 <b>파일을 처음부터 다시 공유</b></span></li>
-              <li><s>—</s><span>누가 무엇을 보는지 통제할 수 없음</span></li>
+              <li><s>—</s><span><b>HTML 파일을 사람마다 따로 전달</b></span></li>
+              <li><s>—</s><span>수정할 때마다 새 파일을 다시 공유</span></li>
+              <li><s>—</s><span>누가 무엇을 볼 수 있는지 관리하기 어려움</span></li>
             </ul>
             <ul class="ba-face" data-f="after">
-              <li><s>→</s><span><b>링크 하나로 모두 접속</b></span></li>
-              <li><s>→</s><span>고치면 <b>사이트에 자동 반영</b></span></li>
-              <li><s>→</s><span><b>볼 사람만 보게</b></span></li>
+              <li><s>→</s><span>같은 <b>링크로 접속</b></span></li>
+              <li><s>→</s><span>수정 · 재배포하면 같은 주소에 최신 버전 반영</span></li>
+              <li><s>→</s><span>사용자별 <b>로그인 · 권한 관리</b></span></li>
             </ul>
           </div>
         </div>
@@ -1124,73 +1599,144 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 </section>
 
 
-<!-- ═══════════ 배포 · 질문력 쪽지시험 ═══════════ -->
-<section class="sec qz" id="qz-share" data-chapter="07 공유·운영">
+
+<!-- ═══════════ 07-1 공유·운영 실습 ═══════════ -->
+<section class="sec dt" id="t-share" data-step="1" style="--pc:var(--c-share)" data-chapter="07 공유·운영">
   <div class="wrap">
-    <article class="qz-card" data-qz data-rv="scale">
-      <div class="qz-pin">📌</div>
-      <p class="qz-q">Q. 공유 · 운영 단계에서 역할(사람 · AI)을 알맞게 연결해보세요.</p>
-      <div class="qz-rule"></div>
-
-      <div class="qz-board">
-        <ul class="qz-side qz-left">
-          <li class="qz-item" data-key="human"><b>사람</b><span>판단 · 책임</span></li>
-          <li class="qz-item" data-key="ai"><b>AI</b><span>수행 · 구현</span></li>
-        </ul>
-        <div class="qz-mark">❓</div>
-        <ul class="qz-side qz-right">
-          <li class="qz-item" data-key="ai">여러 사용자가 동시에 접속해도 데이터가 섞이지 않게 개별 분리 및 저장하기</li>
-          <li class="qz-item" data-key="human">정보 등급별 &lsquo;접근 권한(보안) 통제 기준&rsquo; 확립하기</li>
-        </ul>
-        <svg class="qz-wires"></svg>
+    <div class="rc-top dt-head">
+      <div class="rc-head">
+        <div class="eyebrow" data-rv="fade"><s></s>공유 · 운영 · 직접 해보기</div>
+        <h2 class="t-mid" data-rv style="--d:80ms;margin-top:clamp(8px,1.4vh,16px)">
+          파일이 아닌 <span style="color:var(--teal)">주소로</span> 공유합니다.
+        </h2>
       </div>
+      <ol class="rc-steps" id="shProg">
+        <li class="rc-step"><em>01</em><h4>문제 확인</h4><p>매번 파일을 보내야 합니다</p></li>
+        <li class="rc-step"><em>02</em><h4>배포 서비스 접속</h4><p>어디에 올릴지 정합니다</p></li>
+        <li class="rc-step"><em>03</em><h4>업로드 · 배포</h4><p>접속할 주소를 만듭니다</p></li>
+        <li class="rc-step"><em>04</em><h4>공유 완료</h4><p>링크 하나로 끝냅니다</p></li>
+      </ol>
+    </div>
 
-      <div class="qz-foot">
-        <span class="qz-done">정답입니다 — 무엇을 할지는 사람이 정하고, 만드는 일은 AI가 맡습니다.</span>
-      </div>
-    </article>
+    <div class="rc-stage dt-rc">
+      <article class="rc-panel cc dt-panel sh-panel" id="sh" data-rv="scale" style="--d:150ms">
+        <div class="rc-bar"><i></i><i></i><i></i><span>사내 메신저 — 대화</span>
+          <div class="cc-tools">
+            <button class="cc-nav" id="shPrev" type="button" aria-label="이전 단계">‹</button>
+            <button class="cc-nav" id="shNext" type="button" aria-label="다음 단계">›</button>
+            <button class="cc-again" id="shAgain" type="button">처음부터 ↺</button>
+          </div>
+        </div>
+
+        <div class="dt-body">
+          <!-- 좌 : 사내 메신저 -->
+          <div class="dt-app ms-app">
+            <div class="ms-bar"><span class="ms-ico">D</span>대화<em>— □ ✕</em></div>
+            <div class="ms-head">
+              <span class="ms-who"><b>김에디<s></s></b><small>참여자 2 ▾</small></span>
+              <i>☰</i>
+            </div>
+            <div class="ms-body">
+              <p class="ms-note">대화내용은 7일간 보관됩니다.</p>
+              <div class="ms-date"><span>2026년 08월 26일</span></div>
+              <div class="ms-msg them show"><b>김에디</b><p>수정본 파일 확인했습니다.<br>그런데 최종 수정본이 어떤 거지요?</p></div>
+              <div class="ms-msg me" id="shMine"><p>배포된 주소 보내드립니다 — https://anguk-station.github.io/ets-claude</p></div>
+              <div class="ms-msg them" id="shReply"><b>김에디</b><p>확인했습니다. 이제 헷갈리지 않겠네요!</p></div>
+            </div>
+            <div class="ms-foot">
+              <div class="ms-input" id="shInput"></div>
+              <button class="ms-send" type="button">보내기</button>
+            </div>
+            <button class="dt-mark" id="shMark" type="button"><b>1</b>같이 공유하려면 파일을 매번 보내야 하나?</button>
+            <div class="dt-toast" id="shToast">배포 완료 · 링크 공유</div>
+          </div>
+
+          <!-- 우 : Claude 채팅 -->
+          <div class="dt-chat">
+            <div class="dt-thread" id="shThread">
+              <div class="cc-msg a dt-ask" id="shAsk">
+                배포 서비스를 이용하면 파일 전달 없이 URL 주소만으로도 HTML(결과물)을 공유할 수 있습니다.
+                <div class="dt-q">
+                  <div class="dt-opts">
+                    <button class="dt-pill sh-go" type="button" data-go="1"><b>2</b>깃허브(GitHub) 접속하기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cc-composer">
+              <button class="cc-field" type="button">
+                <span class="cc-ph">Claude에게 무엇이든 물어보세요</span>
+              </button>
+              <button class="cc-send" type="button" aria-label="보내기" disabled>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 깃허브 팝업 -->
+        <div class="lk-modal" id="shModal">
+          <div class="lk-win">
+            <div class="lk-win-bar"><i></i><i></i><i></i><span>github.com — ets-claude</span></div>
+            <div class="lk-win-body">
+              <h4>GitHub Pages 배포</h4>
+              <p>파일을 올리고 배포하면<br>누구나 접속할 수 있는 주소가 만들어집니다.</p>
+              <div class="sh-flow">
+                <button class="lk-issue" id="shUp" type="button">파일 업로드하기</button>
+                <p class="sh-done" id="shUpDone">파일 업로드 완료</p>
+                <button class="lk-issue" id="shDeploy" type="button" disabled>배포하기 (Deploy)</button>
+                <div class="sh-load" id="shLoad"><i></i><i></i><i></i></div>
+                <p class="sh-url" id="shUrl">URL이 성공적으로 생성되었습니다<b>https://anguk-station.github.io/ets-claude</b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
+
 <!-- ═══════════ 08 12월 : 본부 업무로 읽기 ═══════════ -->
 <section class="sec bg-soft" id="decode" data-chapter="08 본부 업무로">
   <div class="wrap">
     <div class="eyebrow" data-rv="fade"><s></s>12월 · 랩업</div>
     <h2 class="t-big" data-rv style="--d:80ms;margin-top:clamp(10px,1.8vh,20px)">
-      이제 영어 학습기가 아니라,<br><span class="dim">본부 업무로 바꿔 읽습니다.</span>
+      이제 같은 세 가지 질문을,<br><span class="dim">우리 본부 업무에 적용해 봅니다.</span>
     </h2>
     <p class="lead" data-rv style="--d:150ms;margin-top:clamp(12px,2vh,24px)">
-      과제를 보고받을 때 던질 질문은 늘 같습니다 — <b>무엇을 남길 것인가(데이터), 무엇을 끌어올 것인가(연결), 누가 쓸 것인가(공유)</b>. 아래에서 업무를 하나 고르시면 세 항목이 어떻게 채워지는지 보입니다.
+      <span class="dc-q1">업무 하나를 골라 세 가지만 확인합니다 — <b>① 어떤 정보를 남길 것인가, ② 어떤 AI · 정보와 연결할 것인가, ③ 누가 어떻게 함께 쓸 것인가.</b></span><br>
+      이 세 가지가 정리되면 필요한 기능이 훨씬 선명해집니다.
     </p>
 
     <div class="dc-pick" data-rv style="--d:220ms" role="group" aria-label="업무 선택" id="dcPick">
-      <button type="button" data-case="safety" aria-pressed="true">현장점검 개선조치 요청서<em>안전품질본부</em></button>
-      <button type="button" data-case="partner" aria-pressed="false">신규 협력사 발굴 · 교차분석<em>PI본부</em></button>
-      <button type="button" data-case="doc" aria-pressed="false">공용문서 작성 자동화<em>토목사업본부</em></button>
-      <button type="button" data-case="check" aria-pressed="false">주간 업무 체크리스트<em>전사 공통</em></button>
+      <button type="button" data-case="report" aria-pressed="true">현장 현안보고 AI Agent<em>재경본부</em></button>
+      <button type="button" data-case="glob" aria-pressed="false">GLOBAL AI 챗봇<em>글로벌사업부</em></button>
+      <button type="button" data-case="est" aria-pressed="false">견적 적정성 검토 플랫폼<em>토목사업부</em></button>
     </div>
 
     <div class="dc-out" data-rv style="--d:290ms">
       <div class="dc-brief">
-        <div class="k">선택한 업무</div>
-        <div class="t" id="dcTitle">현장점검 개선조치 요청서</div>
-        <div class="d" id="dcDesc">현장에서 점검하고, 지적사항을 남기고, 담당자에게 조치를 요청하는 업무.</div>
+        <div class="k" id="dcOrg">재경본부</div>
+        <div class="t" id="dcTitle">현장 현안보고 AI Agent</div>
+        <div class="d" id="dcDesc">현장 현안 DB화 및 정기 보고서 자동 생성 AI</div>
       </div>
 
       <div class="dc-need">
         <div class="dc-row on" data-row="data" style="--rc:var(--c-data)">
           <div class="nm">데이터 축적<em>9월</em></div>
           <div class="txt" id="rowData">—</div>
-          <div class="dc-meter"><i></i></div>
+          <div class="dc-seg" data-fill="0"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <div class="dc-row on" data-row="link" style="--rc:var(--c-link)">
           <div class="nm">외부 연결<em>10월</em></div>
           <div class="txt" id="rowLink">—</div>
-          <div class="dc-meter"><i></i></div>
+          <div class="dc-seg" data-fill="0"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <div class="dc-row on" data-row="share" style="--rc:var(--c-share)">
           <div class="nm">공유 · 운영<em>11월</em></div>
           <div class="txt" id="rowShare">—</div>
-          <div class="dc-meter"><i></i></div>
+          <div class="dc-seg" data-fill="0"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
       </div>
     </div>
@@ -1200,33 +1746,50 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
 <!-- ═══════════ 09 이후 교육 ═══════════ -->
 <section class="sec bg-white" id="next" data-chapter="09 이후 교육">
   <div class="wrap">
-    <div class="eyebrow" data-rv="fade"><s></s>이후 교육은 이렇게 이어집니다</div>
+    <div class="eyebrow" data-rv="fade"><s></s>앞으로의 교육</div>
     <h2 class="t-big" data-rv style="--d:80ms;margin-top:clamp(10px,1.8vh,20px)">
-      본부장은 <span class="dim">읽어내고,</span><br>실장은 <span class="dim">실행합니다.</span>
+      이해에서 끝내지 않고,<br>
+      <span class="dim">조직 업무에 <span style="color:var(--teal)">적용할 수 있는 수준</span>까지 이어갑니다.</span>
     </h2>
 
+    <div class="tl nx-tl5" data-rv style="--d:150ms">
+      <div class="tl-track"><i id="tlFill"></i></div>
+      <div class="tl-row">
+        <div class="tl-c now"><div class="tl-m">8월</div><div class="tl-t">전체 구조 이해</div><div class="tl-s">오늘 · 화면 이후 3가지 이해</div></div>
+        <div class="tl-c"><div class="tl-m">9월</div><div class="tl-t">데이터 축적</div><div class="tl-s">저장 · 조회 상세 시연</div></div>
+        <div class="tl-c"><div class="tl-m">10월</div><div class="tl-t">외부 연결</div><div class="tl-s">AI · 외부 정보 연결 시연</div></div>
+        <div class="tl-c"><div class="tl-m">11월</div><div class="tl-t">공유 · 운영</div><div class="tl-s">배포 · 권한 상세 시연</div></div>
+        <div class="tl-c"><div class="tl-m">12월</div><div class="tl-t">본부 업무 적용</div><div class="tl-s">필요 기능 · 적용영역 판단</div></div>
+      </div>
+    </div>
+
     <div class="tracks">
-      <article class="tr hi" data-rv="scale" style="--d:150ms">
-        <div class="r">본부장급 — 오늘 이 자리</div>
-        <h3>시연과 이해 중심</h3>
-        <p>매월 짧은 시연으로 바이브코딩 전체 과정을 이해합니다.</p>
+      <article class="tr hi" data-rv="scale" style="--d:230ms">
+        <div class="r">본부장급</div>
+        <h3>월별 시연 · 이해 중심</h3>
+        <p>하나의 영어 학습기를 계속 확장해 가며 전체 구조를 이해합니다.</p>
         <ul>
-          <li><s>·</s>직접 코딩·과제 제출 없음</li>
-          <li><s>·</s>대표 사례 1건 → 작동 구조 이해 → 적용 가능성 판단</li>
-          <li><s>·</s>보고받은 과제에서 무엇이 빠졌는지 읽어내기</li>
+          <li><s>·</s>정례회의 내 월 1회 짧은 시연 · 임원 직접 실습 없음</li>
+          <li><s>·</s>9~11월 데이터 → 외부 연결 → 공유 · 운영 순서로 단계별 시연</li>
+          <li><s>·</s>12월 본부 업무에 필요한 기능과 적용 가능성 판단</li>
         </ul>
       </article>
-      <article class="tr" data-rv="scale" style="--d:230ms">
+      <article class="tr" data-rv="scale" style="--d:300ms">
         <div class="r">실장급</div>
-        <h3>과제 실행 중심</h3>
-        <p>본인의 업무에서 개선과제를 정하고 일정 기간 직접 실행합니다.</p>
+        <h3>2시간 · 1회 시연교육</h3>
+        <p>직접 코딩 실습 없이 실제 사례의 전 과정을 시연으로 보고, 조직에서 바꿀 업무를 구체화합니다.</p>
         <ul>
-          <li><s>·</s>수준진단 → 사례교육 → 개별 과제 → 1:1 지원</li>
-          <li><s>·</s>격주 점검 · 결과 공유</li>
-          <li><s>·</s>실행 지원 — AI디자인랩 · ACE · AI링커</li>
+          <li><s>·</s><span><b>교육 전</b> · 임원 본인 + 소속 직원 AI 수준진단 → 인식 차이 확인</span></li>
+          <li><s>·</s><span><b>교육</b> · 실제 사례로 AI 활용 · 업무개선 전 과정 시연</span></li>
+          <li><s>·</s><span><b>교육 후</b> · 개별 개선과제 1~2개월 + ACE · AI링커 1:1 지원</span></li>
         </ul>
       </article>
     </div>
+
+    <p class="nx-note" data-rv style="--d:370ms">
+      ※ 수준진단은 교육 당일 테스트가 아닙니다. 사전 진단 결과는 개인 점수 · 순위화 없이
+      <b>임원 본인의 인식과 직원 체감의 차이</b>를 교육 인트로에서 보여주는 용도로 활용합니다.
+    </p>
   </div>
 </section>
 
@@ -1235,15 +1798,15 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;letter
   <div class="wrap">
     <div class="eyebrow" data-rv="fade"><s></s>오늘의 정리</div>
     <h2 class="t-big" data-rv style="--d:80ms;margin-top:clamp(10px,1.8vh,20px)">
-      만드는 건 5분,<br><span class="dim">쓰게 만드는 건 세 단계.</span>
+      바이브코딩은<br><span class="dim">화면을 만드는 것으로 끝나지 않습니다.</span>
     </h2>
     <ul class="close-list" data-rv style="--d:170ms">
-      <li><b>01</b><span>6월 결과물은 <u>첫 번째 버전</u>이었습니다. 화면은 완성처럼 보였지만 기능은 절반이었습니다.</span></li>
-      <li><b>02</b><span>이후에 나온 질문은 모두 <u>데이터 · 연결 · 공유</u> 가운데 하나였습니다.</span></li>
-      <li><b>03</b><span>9 · 10 · 11월에 하나씩 시연하고, <u>12월에 본부 업무로</u> 바꿔 읽습니다.</span></li>
+      <li><b>01</b><span>6월에는 <u>AI로 화면을 만드는 과정</u>을 경험했습니다.</span></li>
+      <li><b>02</b><span>오늘은 같은 영어 학습기를 이어서 <u>데이터 축적 · 외부 연결 · 공유 · 운영</u>이 어떻게 추가되는지 봤습니다.</span></li>
+      <li><b>03</b><span>9 · 10 · 11월에는 각 연결 과정을 더 자세히 시연하고, 12월에는 <u>본부 업무에 필요한 기능과 적용영역</u>을 판단합니다.</span></li>
     </ul>
     <p class="close-q" data-rv style="--d:250ms">
-      우리 본부의 그 업무에는<br><u>지금 무엇이 빠져</u> 있습니까?
+      우리 본부 업무 하나를 바꾼다면,<br><u>무엇을 남기고 · 무엇과 연결하고 · 누가 함께 써야 할까요?</u>
     </p>
   </div>
 </section>
@@ -1319,9 +1882,25 @@ function goBeat(n){
   scrollTo({ top: navY, behavior: REDUCE ? 'auto' : 'smooth' });
   clearTimeout(navTimer); navTimer = setTimeout(function(){ navY = null; }, 950);
 }
-/* 사용자가 직접 휠·터치로 움직이면 예약된 목표는 버린다 */
-addEventListener('wheel',      function(){ navY = null; }, {passive:true});
+/* 사용자가 직접 터치로 움직이면 예약된 목표는 버린다 */
 addEventListener('touchstart', function(){ navY = null; }, {passive:true});
+
+/* 휠 = 장표 넘기기. 한 번의 제스처가 한 장이 되도록 누적량과 쿨다운을 함께 쓴다.
+   트랙패드는 관성으로 이벤트가 수십 번 들어오므로 둘 중 하나만으로는 여러 장이 넘어간다. */
+var wheelLock = 0, wheelAcc = 0;
+addEventListener('wheel', function(e){
+  if(e.ctrlKey) return;                                  // 확대·축소는 브라우저에 맡긴다
+  if(toc.classList.contains('open')) return;             // 목차는 자체 스크롤
+  if(e.target.closest && e.target.closest('.cc-code, .cc-view, .rc-frame')) return;  // 내부 스크롤 영역
+  e.preventDefault();
+  var now = +new Date();
+  if(now < wheelLock){ wheelAcc = 0; return; }
+  wheelAcc += e.deltaY;
+  if(Math.abs(wheelAcc) < 36) return;
+  go(wheelAcc > 0 ? 1 : -1);
+  wheelAcc = 0;
+  wheelLock = now + 780;
+}, {passive:false});
 
 /* ───── 4. 스크롤 상태 갱신 ───── */
 var scrollies = $$('[data-scrolly]');
@@ -1598,142 +2177,544 @@ function layoutScatter(){
   }, { threshold:.12 }).observe(sort);
 })();
 
-/* ───── 5. 타임라인 채우기 ───── */
-var tlFill = $('#tlFill');
-if($('#journey')){
-  new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting && tlFill) tlFill.style.setProperty('--fill','25%'); });
-  },{threshold:.35}).observe($('#journey'));
+/* 두 실습이 함께 쓰는 입자 효과. host 는 position:relative 인 요소여야 한다. */
+function sparkBurst(host, x, y, n, spread){
+  for(var i = 0; i < n; i++){
+    var p = document.createElement('i');
+    var a = Math.random() * Math.PI * 2;
+    var d = spread * (0.35 + Math.random() * 0.65);
+    var sz = 5 + Math.random() * 6;
+    p.className = 'dt-spark' + (Math.random() < .4 ? ' sq' : '');
+    p.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + sz + 'px;height:' + sz + 'px;'
+      + '--dx:' + Math.cos(a) * d + 'px;--dy:' + Math.sin(a) * d + 'px;'
+      + 'animation-delay:' + Math.round(Math.random() * 90) + 'ms;'
+      + 'opacity:' + (0.55 + Math.random() * 0.45);
+    host.appendChild(p);
+  }
+  setTimeout(function(){
+    $$('.dt-spark', host).forEach(function(el){ if(el.parentNode) el.parentNode.removeChild(el); });
+  }, 1000);
 }
 
-/* ───── 6. 질문력 쪽지시험 : 사람 ↔ AI 역할 선 잇기 ─────
-   왼쪽 하나를 고르고 오른쪽 하나를 고르면 선이 이어진다.
-   좌표는 매번 실측해서 그리므로 화면 폭이 바뀌어도 선이 따라온다. */
+/* ───── 4-e. 데이터 축적 실습 : 문제 제기 → 선택 → 지시 → 결과 ─────
+   step 1 마커 클릭 · 2 항목 선택 · 3 전송 · 4 완료.
+   #recap 의 창·채팅 UI(.rc-panel.cc / .cc-composer / .cc-coach)를 그대로 재사용하고
+   상태만 #t-data[data-step] 하나로 관리한다. */
 (function(){
-  var boards = $$('[data-qz]');
-  if(!boards.length) return;
+  var sec = $('#t-data'); if(!sec) return;
+  var panel = $('#dt'), thread = $('#dtThread'), ask = $('#dtAsk'),
+      field = $('#dtField'), text = $('#dtText'), ph = $('#dtPh'),
+      send  = $('#dtSend'),  coach = $('#dtCoach'), mark = $('#dtMark'),
+      dash  = $('#dtDash'),  toast = $('#dtToast'),
+      empty = $('#dtEmpty'),
+      prev  = $('#dtPrev'),  next = $('#dtNext'), again = $('#dtAgain'),
+      progs = $$('#dtProg .rc-step');
 
-  boards.forEach(function(card){
-    var svg   = $('.qz-wires', card),
-        lefts = $$('.qz-left .qz-item', card),
-        rights= $$('.qz-right .qz-item', card),
-        board = $('.qz-board', card),
-        done  = $('.qz-done', card);
-    var picked = null, solved = 0;
+  var Q1 = '개인 학습 데이터를 기록 정리하고 싶어';
+  var A1 = '데이터 관리를 위해 아래 사항을 정해주세요.';
+  var P2 = '영어 학습앱 사용자 관리를 위해 학습기록, 시험 점수를 팀즈(쉐어포인트)에 연동시켜줘';
+  var A2 = '학습 기록과 시험 점수를 팀즈(쉐어포인트)에 연동했습니다. 이제 학습할 때마다 기록이 쌓입니다.';
+  var NEED = ['log', 'score', 'teams'];
 
-    function ns(t){ return document.createElementNS('http://www.w3.org/2000/svg', t); }
+  var timer = null, tipTimer = null, typed = false;
 
-    /* 두 항목의 연결점을 재서 곡선을 그린다 */
-    function draw(a, b, cls){
-      var r = board.getBoundingClientRect(),
-          ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
-      var x1 = ra.right - r.left, y1 = ra.top + ra.height / 2 - r.top,
-          x2 = rb.left  - r.left, y2 = rb.top + rb.height / 2 - r.top;
-      var mx = (x1 + x2) / 2;
-      var p = ns('path');
-      p.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + mx + ',' + y1 + ' ' + mx + ',' + y2 + ' ' + x2 + ',' + y2);
-      p.setAttribute('class', 'qz-wire ' + cls);
-      p.dataset.a = lefts.indexOf(a); p.dataset.b = rights.indexOf(b);
-      svg.appendChild(p);
-      return p;
-    }
-
-    /* 화면이 바뀌면 이어진 선을 다시 그린다 */
-    function redraw(){
-      $$('.qz-wire.ok', svg).forEach(function(p){
-        var a = lefts[+p.dataset.a], b = rights[+p.dataset.b];
-        var r = board.getBoundingClientRect(),
-            ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
-        var x1 = ra.right - r.left, y1 = ra.top + ra.height / 2 - r.top,
-            x2 = rb.left  - r.left, y2 = rb.top + rb.height / 2 - r.top;
-        var mx = (x1 + x2) / 2;
-        p.setAttribute('d', 'M' + x1 + ',' + y1 + ' C' + mx + ',' + y1 + ' ' + mx + ',' + y2 + ' ' + x2 + ',' + y2);
-      });
-    }
-
-    function clearPick(){
-      lefts.concat(rights).forEach(function(el){ el.classList.remove('pick'); });
-      picked = null;
-    }
-
-    /* 카드 좌표계에 입자를 뿌린다. 개수·거리는 난수로 흩고 900ms 뒤 스스로 정리된다. */
-    function burst(x, y, n, spread){
-      for(var i = 0; i < n; i++){
-        var p = document.createElement('i');
-        var a = Math.random() * Math.PI * 2;
-        var d = spread * (0.35 + Math.random() * 0.65);
-        var sz = 4 + Math.random() * 5;
-        p.className = 'qz-spark' + (Math.random() < .4 ? ' sq' : '');
-        p.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + sz + 'px;height:' + sz + 'px;'
-          + '--dx:' + Math.cos(a) * d + 'px;--dy:' + Math.sin(a) * d + 'px;'
-          + 'animation-delay:' + Math.round(Math.random() * 90) + 'ms;'
-          + 'opacity:' + (0.55 + Math.random() * 0.45);
-        card.appendChild(p);
-      }
-      setTimeout(function(){
-        $$('.qz-spark', card).forEach(function(el){
-          if(el.parentNode) el.parentNode.removeChild(el);
-        });
-      }, 950);
-    }
-
-    function tryPair(right){
-      var left = picked;
-      if(left.dataset.key === right.dataset.key){
-        draw(left, right, 'ok');
-        left.classList.add('done'); right.classList.add('done');
-        left.classList.remove('pick');
-        picked = null;
-        solved++;
-
-        var rc = card.getBoundingClientRect(),
-            ra = left.getBoundingClientRect(), rb = right.getBoundingClientRect();
-        burst((ra.right + rb.left) / 2 - rc.left,
-              ((ra.top + ra.height / 2) + (rb.top + rb.height / 2)) / 2 - rc.top, 14, 90);
-
-        if(solved === lefts.length){
-          card.classList.add('solved');
-          setTimeout(function(){
-            var r = card.getBoundingClientRect();
-            burst(r.width / 2, r.height * 0.52, 30, 190);
-          }, 260);
-        }
-      } else {
-        var bad = draw(left, right, 'no');
-        card.classList.add('shake');
-        setTimeout(function(){ card.classList.remove('shake'); }, 420);
-        setTimeout(function(){ if(bad.parentNode) bad.parentNode.removeChild(bad); }, 620);
-        clearPick();
-      }
-    }
-
-    lefts.forEach(function(el){
-      el.addEventListener('click', function(){
-        if(el.classList.contains('done')) return;
-        if(picked === el){ clearPick(); return; }
-        clearPick(); picked = el; el.classList.add('pick');
-      });
+  function step(n){
+    sec.dataset.step = String(n);
+    prev.disabled = (n === 1); next.disabled = (n === 4);
+    updateProg();
+  }
+  /* 상단 4단계 : 1 문제 확인 · 2 데이터 고르기 · 3 저장 공간 고르기 · 4 결과 */
+  function progIdx(){
+    var n = +sec.dataset.step;
+    if(n <= 1) return 0;
+    if(n >= 4) return 3;
+    if(n === 3) return 2;
+    var p = picked();
+    return (p.indexOf('log') >= 0 && p.indexOf('score') >= 0) ? 2 : 1;
+  }
+  function updateProg(){
+    var cur = progIdx();
+    progs.forEach(function(el, i){
+      el.classList.toggle('on', i === cur);
+      el.classList.toggle('done', i < cur);
     });
-    rights.forEach(function(el){
-      el.addEventListener('click', function(){
-        if(el.classList.contains('done')) return;
-        if(!picked){ el.classList.add('nudge'); setTimeout(function(){ el.classList.remove('nudge'); }, 400); return; }
-        tryPair(el);
-      });
-    });
+  }
+  function stepNow(){ return +sec.dataset.step; }
+  function flags(f){ panel.className = 'rc-panel cc dt-panel' + (f ? ' ' + f : ''); }
 
-    var reset = $('.qz-reset', card);
-    if(reset) reset.addEventListener('click', function(){
-      svg.innerHTML = '';
-      lefts.concat(rights).forEach(function(el){ el.classList.remove('done', 'pick'); });
-      card.classList.remove('solved');
-      picked = null; solved = 0;
+  function bubble(cls, html){
+    var d = document.createElement('div');
+    d.className = 'cc-msg ' + cls; d.innerHTML = html;
+    thread.insertBefore(d, ask);
+    thread.scrollTop = thread.scrollHeight;
+    return d;
+  }
+  function clearBubbles(){
+    $$('.cc-msg', thread).forEach(function(el){
+      if(el !== ask) el.parentNode.removeChild(el);
     });
+  }
 
-    addEventListener('resize', function(){ clearTimeout(card._rt); card._rt = setTimeout(redraw, 140); }, { passive:true });
-    if(done) done.setAttribute('aria-live', 'polite');
+  /* 선택 불가 항목 : 사유를 선택지 바로 아래 줄에 펼친다 (떠 있으면 스크롤 영역에 잘린다) */
+  function blockTip(btn){
+    clearWarn();
+    var line = btn.closest('.dt-q').querySelector('.dt-warn');
+    line.textContent = '⚠ ' + btn.dataset.block;
+    line.classList.add('on');
+    btn.classList.add('warn', 'shake');
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(clearWarn, 3200);
+    setTimeout(function(){ btn.classList.remove('shake'); }, 450);
+  }
+  function clearWarn(){
+    $$('.warn', ask).forEach(function(el){ el.classList.remove('warn'); });
+    $$('.dt-warn', ask).forEach(function(el){ el.classList.remove('on'); el.textContent = ''; });
+  }
+
+  function picked(){
+    return $$('[data-pick].on', ask).map(function(b){ return b.dataset.pick; });
+  }
+  function checkDone(){
+    var p = picked();
+    var ok = NEED.every(function(k){ return p.indexOf(k) >= 0; });
+    if(ok && stepNow() === 2) toStep3();
+  }
+
+  /* ── 단계 전환 ── */
+  function toStep2(){
+    if(stepNow() !== 1) return;
+    step(2);
+    bubble('u', Q1);
+    setTimeout(function(){ ask.classList.add('in'); }, 320);
+  }
+  function toStep3(){
+    step(3);
+    typeIn();
+  }
+  function typeIn(){
+    clearTimeout(timer);
+    flags('typing'); ph.style.display = 'none';
+    var i = 0;
+    (function run(){
+      i = Math.min(i + 2, P2.length);
+      text.textContent = P2.slice(0, i);
+      if(i < P2.length) timer = setTimeout(run, 24);
+      else { typed = true; send.disabled = false; flags('ready'); }
+    })();
+  }
+  function submit(){
+    if(!panel.classList.contains('ready')) return;
+    bubble('u', P2);
+    text.textContent = ''; ph.style.display = ''; send.disabled = true;
+    flags('busy'); typed = false;
+    step(4);
+    setTimeout(function(){
+      toast.classList.add('on');
+      dash.classList.add('on');
+      empty.classList.add('off');
+      popSpark();
+    }, 450);
+    setTimeout(function(){ bubble('a', A2); flags('done'); }, 1100);
+  }
+
+  /* 알림 자리에서 입자를 터뜨린다 */
+  function popSpark(){
+    var host = toast.parentNode;
+    var rh = host.getBoundingClientRect(), rt = toast.getBoundingClientRect();
+    sparkBurst(host, rt.left + rt.width / 2 - rh.left, rt.top + rt.height / 2 - rh.top, 22, 130);
+  }
+
+  /* ── 어느 단계로든 즉시 그린다 ── */
+  function go(n){
+    clearTimeout(timer); clearTimeout(tipTimer);
+    clearWarn();
+    clearBubbles();
+    text.textContent = ''; ph.style.display = ''; send.disabled = true; typed = false;
+    ask.classList.remove('in');
+    $$('[data-pick]', ask).forEach(function(b){ b.classList.remove('on'); });
+    toast.classList.remove('on'); dash.classList.remove('on'); empty.classList.remove('off');
+    flags();
+
+    if(n >= 2){ bubble('u', Q1); ask.classList.add('in'); }
+    if(n >= 3){
+      $$('[data-pick]', ask).forEach(function(b){ b.classList.add('on'); });
+      text.textContent = P2; ph.style.display = 'none';
+      send.disabled = false; typed = true; flags('ready');
+    }
+    if(n >= 4){
+      bubble('u', P2);
+      text.textContent = ''; ph.style.display = ''; send.disabled = true; typed = false;
+      bubble('a', A2);
+      toast.classList.add('on'); dash.classList.add('on'); empty.classList.add('off');
+      flags('done');
+    }
+    step(n);
+  }
+
+  /* ── 이벤트 ── */
+  mark.addEventListener('click', toStep2);
+  ask.addEventListener('click', function(e){
+    var b = e.target.closest('[data-pick],[data-block]');
+    if(!b || stepNow() !== 2) return;
+    if(b.dataset.block){ blockTip(b); return; }
+    b.classList.toggle('on');
+    updateProg();
+    checkDone();
   });
+  field.addEventListener('click', function(){
+    if(panel.classList.contains('typing')){
+      clearTimeout(timer); text.textContent = P2;
+      typed = true; send.disabled = false; flags('ready');
+    }
+  });
+  send.addEventListener('click', submit);
+  coach.addEventListener('click', function(){ if(panel.classList.contains('ready')) submit(); });
+  prev.addEventListener('click', function(){ go(Math.max(1, stepNow() - 1)); });
+  next.addEventListener('click', function(){ go(Math.min(4, stepNow() + 1)); });
+  again.addEventListener('click', function(){ go(1); });
+
+  go(1);
 })();
+
+/* ───── 4-f. 외부 연결 실습 : 문제 제기 → 기능 선택 → API 발급 → 연결 확인 ─────
+   #t-data 와 같은 뼈대. 상태는 #t-link[data-step] 하나로 관리한다. */
+(function(){
+  var sec = $('#t-link'); if(!sec) return;
+  var panel = $('#lk'), thread = $('#lkThread'), ask = $('#lkAsk'),
+      field = $('#lkField'), text = $('#lkText'), ph = $('#lkPh'),
+      send  = $('#lkSend'),  coach = $('#lkCoach'), mark = $('#lkMark'),
+      modal = $('#lkModal'), issue = $('#lkIssue'), copied = $('#lkCopied'),
+      simQ  = $('#lkSimQ'),  simA  = $('#lkSimA'),
+      toast = $('#lkToast'), badge = $('#lkBadge'),
+      prev  = $('#lkPrev'),  next  = $('#lkNext'), again = $('#lkAgain'),
+      progs = $$('#lkProg .rc-step');
+
+  var Q1 = 'AI 대화창에 질문했는데 답변을 안 하네?';
+  var A1 = '진짜 대화하는 AI 튜터를 만들려면 외부 AI의 능력을 끌어와야 합니다. 필요한 외부 기능을 선택하세요.';
+  var P2 = '방금 발급받은 AI API 키[sk-ant-api...]를 연동해서, AI 대화창이 실제 답변을 하도록 코드를 수정해줘';
+  var A2 = 'API 키를 연동했습니다. 이제 AI 튜터가 실제로 답변합니다.';
+  var SIM_Q = '“We need this by Friday.” 더 정중하게 바꾸면?';
+  var SIM_A = '“Could we have this by Friday?”가 자연스럽습니다. 회의라면 “Would it be possible to have this by Friday?”가 더 정중합니다.';
+
+  var timer = null, warnTimer = null, simTimer = null;
+
+  function step(n){
+    sec.dataset.step = String(n);
+    prev.disabled = (n === 1); next.disabled = (n === 4);
+    updateProg();
+  }
+  function stepNow(){ return +sec.dataset.step; }
+  function flags(f){ panel.className = 'rc-panel cc dt-panel' + (f ? ' ' + f : ''); }
+
+  /* 상단 4단계 : 1 문제 · 2 기능 선택 · 3 키 발급 · 4 연결 확인 */
+  function progIdx(){
+    var n = stepNow();
+    if(n <= 1) return 0;
+    if(n >= 4) return 3;
+    if(n === 3) return 2;
+    return $('[data-pick="ai"]', ask).classList.contains('on') ? 2 : 1;
+  }
+  function updateProg(){
+    var cur = progIdx();
+    progs.forEach(function(el, i){
+      el.classList.toggle('on', i === cur);
+      el.classList.toggle('done', i < cur);
+    });
+  }
+
+  function bubble(cls, html){
+    var d = document.createElement('div');
+    d.className = 'cc-msg ' + cls; d.innerHTML = html;
+    thread.insertBefore(d, ask);
+    thread.scrollTop = thread.scrollHeight;
+    return d;
+  }
+  function clearBubbles(){
+    $$('.cc-msg', thread).forEach(function(el){ if(el !== ask) el.parentNode.removeChild(el); });
+  }
+  function clearWarn(){
+    $$('.warn', ask).forEach(function(el){ el.classList.remove('warn'); });
+    $$('.dt-warn', ask).forEach(function(el){ el.classList.remove('on'); el.textContent = ''; });
+  }
+  function blockTip(btn){
+    clearWarn();
+    var line = btn.closest('.dt-q').querySelector('.dt-warn');
+    line.textContent = '⚠ ' + btn.dataset.block;
+    line.classList.add('on');
+    btn.classList.add('warn', 'shake');
+    clearTimeout(warnTimer);
+    warnTimer = setTimeout(clearWarn, 3200);
+    setTimeout(function(){ btn.classList.remove('shake'); }, 450);
+  }
+
+  /* ── 단계 ── */
+  function toStep2(){
+    if(stepNow() !== 1) return;
+    step(2);
+    bubble('u', Q1);
+    setTimeout(function(){ ask.classList.add('in'); }, 320);
+  }
+  function pickAi(btn){
+    btn.classList.add('on');
+    updateProg();
+    setTimeout(function(){ modal.classList.add('on'); }, 420);
+  }
+  function issueKey(){
+    copied.classList.add('on');
+    setTimeout(function(){
+      modal.classList.remove('on');
+      copied.classList.remove('on');
+      step(3); typeIn();
+    }, 1100);
+  }
+  function typeIn(){
+    clearTimeout(timer);
+    flags('typing'); ph.style.display = 'none';
+    var i = 0;
+    (function run(){
+      i = Math.min(i + 2, P2.length);
+      text.textContent = P2.slice(0, i);
+      if(i < P2.length) timer = setTimeout(run, 22);
+      else { send.disabled = false; flags('ready'); }
+    })();
+  }
+  function submit(){
+    if(!panel.classList.contains('ready')) return;
+    bubble('u', P2);
+    text.textContent = ''; ph.style.display = ''; send.disabled = true;
+    flags('busy');
+    step(4);
+    setTimeout(function(){
+      toast.classList.add('on'); badge.textContent = '연결됨';
+      var host = toast.parentNode;
+      var rh = host.getBoundingClientRect(), rt = toast.getBoundingClientRect();
+      sparkBurst(host, rt.left + rt.width / 2 - rh.left, rt.top + rt.height / 2 - rh.top, 22, 130);
+    }, 420);
+    setTimeout(function(){ bubble('a', A2); flags('done'); }, 900);
+    setTimeout(runSim, 1100);
+  }
+
+  /* 대화창이 살아나 실제로 주고받는 모습 */
+  function runSim(){
+    clearTimeout(simTimer);
+    simQ.textContent = SIM_Q; simQ.classList.add('on');
+    simTimer = setTimeout(function(){
+      simA.classList.add('on');
+      var i = 0;
+      (function run(){
+        i = Math.min(i + 2, SIM_A.length);
+        simA.textContent = SIM_A.slice(0, i);
+        if(i < SIM_A.length) simTimer = setTimeout(run, 32);
+      })();
+    }, 700);
+  }
+
+  /* ── 어느 단계로든 즉시 그린다 ── */
+  function go(n){
+    clearTimeout(timer); clearTimeout(warnTimer); clearTimeout(simTimer);
+    clearWarn(); clearBubbles();
+    text.textContent = ''; ph.style.display = ''; send.disabled = true;
+    ask.classList.remove('in');
+    $$('[data-pick]', ask).forEach(function(b){ b.classList.remove('on'); });
+    modal.classList.remove('on'); copied.classList.remove('on');
+    toast.classList.remove('on'); badge.textContent = '연결 안됨';
+    simQ.classList.remove('on'); simA.classList.remove('on');
+    simQ.textContent = ''; simA.textContent = '';
+    flags();
+
+    if(n >= 2){ bubble('u', Q1); ask.classList.add('in'); }
+    if(n >= 3){
+      $('[data-pick="ai"]', ask).classList.add('on');
+      text.textContent = P2; ph.style.display = 'none';
+      send.disabled = false; flags('ready');
+    }
+    if(n >= 4){
+      bubble('u', P2);
+      text.textContent = ''; ph.style.display = ''; send.disabled = true;
+      bubble('a', A2); flags('done');
+      simQ.textContent = SIM_Q; simQ.classList.add('on');
+      simA.textContent = SIM_A; simA.classList.add('on');
+      toast.classList.add('on'); badge.textContent = '연결됨';
+    }
+    step(n);
+  }
+
+  /* ── 이벤트 ── */
+  mark.addEventListener('click', toStep2);
+  ask.addEventListener('click', function(e){
+    var b = e.target.closest('[data-pick],[data-block]');
+    if(!b || stepNow() !== 2) return;
+    if(b.dataset.block){ blockTip(b); return; }
+    if(b.classList.contains('on')) return;
+    pickAi(b);
+  });
+  issue.addEventListener('click', issueKey);
+  field.addEventListener('click', function(){
+    if(panel.classList.contains('typing')){
+      clearTimeout(timer); text.textContent = P2;
+      send.disabled = false; flags('ready');
+    }
+  });
+  send.addEventListener('click', submit);
+  coach.addEventListener('click', function(){ if(panel.classList.contains('ready')) submit(); });
+  prev.addEventListener('click', function(){ go(Math.max(1, stepNow() - 1)); });
+  next.addEventListener('click', function(){ go(Math.min(4, stepNow() + 1)); });
+  again.addEventListener('click', function(){ go(1); });
+
+  go(1);
+})();
+
+/* ───── 4-g. 공유·운영 실습 : 문제 제기 → 배포 서비스 접속 → 업로드·배포 → 공유 완료 ─────
+   앞의 두 실습과 같은 뼈대. 상태는 #t-share[data-step] 하나. */
+(function(){
+  var sec = $('#t-share'); if(!sec) return;
+  var panel = $('#sh'), thread = $('#shThread'), ask = $('#shAsk'),
+      mark  = $('#shMark'), modal = $('#shModal'),
+      up    = $('#shUp'),   upDone = $('#shUpDone'),
+      dep   = $('#shDeploy'), load = $('#shLoad'), url = $('#shUrl'),
+      input = $('#shInput'), mine = $('#shMine'), reply = $('#shReply'),
+      toast = $('#shToast'),
+      prev  = $('#shPrev'), next = $('#shNext'), again = $('#shAgain'),
+      progs = $$('#shProg .rc-step');
+
+  var Q1  = '같이 공유하려면 파일을 매번 보내야 하나?';
+  var A1  = '배포 서비스를 이용하면 파일 전달 없이 URL 주소만으로도 HTML(결과물)을 공유할 수 있습니다.';
+  var A2  = '배포가 끝났습니다. 이제 파일 대신 주소만 전달하면 됩니다.';
+  var URL = 'https://anguk-station.github.io/ets-claude';
+  var MSG = '배포된 주소 보내드립니다 — ' + URL;
+
+  var timer = null;
+
+  function step(n){
+    sec.dataset.step = String(n);
+    prev.disabled = (n === 1); next.disabled = (n === 4);
+    updateProg();
+  }
+  function stepNow(){ return +sec.dataset.step; }
+  function flags(f){ panel.className = 'rc-panel cc dt-panel sh-panel' + (f ? ' ' + f : ''); }
+  function updateProg(){
+    var n = stepNow(), cur = n <= 1 ? 0 : (n === 2 ? 1 : (n === 3 ? 2 : 3));
+    progs.forEach(function(el, i){
+      el.classList.toggle('on', i === cur);
+      el.classList.toggle('done', i < cur);
+    });
+  }
+
+  function bubble(cls, html){
+    var d = document.createElement('div');
+    d.className = 'cc-msg ' + cls; d.innerHTML = html;
+    thread.insertBefore(d, ask);
+    thread.scrollTop = thread.scrollHeight;
+    return d;
+  }
+  function clearBubbles(){
+    $$('.cc-msg', thread).forEach(function(el){ if(el !== ask) el.parentNode.removeChild(el); });
+  }
+
+  /* ── 단계 ── */
+  function toStep2(){
+    if(stepNow() !== 1) return;
+    step(2);
+    bubble('u', Q1);
+    setTimeout(function(){ ask.classList.add('in'); }, 320);
+  }
+  function openModal(){
+    if(stepNow() !== 2) return;
+    step(3);
+    setTimeout(function(){ modal.classList.add('on'); }, 260);
+  }
+  function doUpload(){
+    if(up.disabled) return;
+    up.disabled = true;
+    upDone.classList.add('on');
+    setTimeout(function(){ dep.disabled = false; }, 420);
+  }
+  function doDeploy(){
+    if(dep.disabled) return;
+    dep.disabled = true;
+    load.classList.add('on');
+    timer = setTimeout(function(){
+      load.classList.remove('on');
+      url.classList.add('on');
+      timer = setTimeout(function(){
+        modal.classList.remove('on');
+        step(4); sendMsg();
+      }, 1300);
+    }, 1500);
+  }
+
+  /* 메신저에 주소를 적어 보내고, 동료가 답한다 */
+  function sendMsg(){
+    clearTimeout(timer);
+    input.classList.add('typing');
+    var i = 0;
+    (function run(){
+      i = Math.min(i + 2, MSG.length);
+      input.textContent = MSG.slice(0, i);
+      if(i < MSG.length){ timer = setTimeout(run, 22); return; }
+      timer = setTimeout(function(){
+        input.textContent = ''; input.classList.remove('typing');
+        mine.classList.add('on');
+        toast.classList.add('on');
+        var host = toast.parentNode;
+        var rh = host.getBoundingClientRect(), rt = toast.getBoundingClientRect();
+        sparkBurst(host, rt.left + rt.width / 2 - rh.left, rt.top + rt.height / 2 - rh.top, 22, 130);
+        timer = setTimeout(function(){
+          reply.classList.add('on');
+          bubble('a', A2); flags('done');
+        }, 900);
+      }, 450);
+    })();
+  }
+
+  /* ── 어느 단계로든 즉시 그린다 ── */
+  function go(n){
+    clearTimeout(timer);
+    clearBubbles();
+    ask.classList.remove('in');
+    modal.classList.remove('on');
+    up.disabled = false; dep.disabled = true;
+    upDone.classList.remove('on'); load.classList.remove('on'); url.classList.remove('on');
+    input.textContent = ''; input.classList.remove('typing');
+    mine.classList.remove('on'); reply.classList.remove('on');
+    toast.classList.remove('on');
+    flags();
+
+    if(n >= 2){ bubble('u', Q1); ask.classList.add('in'); }
+    if(n >= 4){
+      up.disabled = true; dep.disabled = true;
+      upDone.classList.add('on'); url.classList.add('on');
+      mine.classList.add('on'); reply.classList.add('on');
+      toast.classList.add('on');
+      bubble('a', A2); flags('done');
+    }
+    step(n);
+  }
+
+  /* ── 이벤트 ── */
+  mark.addEventListener('click', toStep2);
+  ask.addEventListener('click', function(e){
+    if(!e.target.closest('[data-go]')) return;
+    openModal();
+  });
+  up.addEventListener('click', doUpload);
+  dep.addEventListener('click', doDeploy);
+  prev.addEventListener('click', function(){ go(Math.max(1, stepNow() - 1)); });
+  next.addEventListener('click', function(){ go(Math.min(4, stepNow() + 1)); });
+  again.addEventListener('click', function(){ go(1); });
+
+  go(1);
+})();
+
+/* ───── 5. 타임라인 채우기 ───── */
+/* 타임라인이 09 섹션으로 옮겨졌다 — 관찰 대상도 함께 옮긴다.
+   5개 지점 중 첫 칸(8월)이 '오늘'이므로 채움은 12%. */
+var tlFill = $('#tlFill'), tlHost = $('#next');
+if(tlHost){
+  new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting && tlFill) tlFill.style.setProperty('--fill','12%'); });
+  },{threshold:.35}).observe(tlHost);
+}
 
 /* ───── 6. 목차 ───── */
 var toc = $('#toc');
@@ -1770,37 +2751,31 @@ $$('[data-ba]').forEach(function(ba){
 
 /* ───── 8. 본부 업무 판독기 ───── */
 var CASES = {
-  safety:{ t:'현장점검 개선조치 요청서',
-    d:'현장에서 점검하고, 지적사항을 남기고, 담당자에게 조치를 요청하는 업무.',
-    data:{lvl:100,h:'필수 — 점검 이력이 쌓여야 한다',s:'현장·공종·일자별로 쌓여야 반복되는 지적사항이 드러난다'},
-    link:{lvl:60, h:'부분 — 분류와 통보를 자동으로',s:'사진과 지적 내용을 AI가 분류해 담당자에게 자동으로 보낸다'},
-    share:{lvl:100,h:'필수 — 현장에서 바로 열려야 한다',s:'파일 전달 방식으로는 현장 모바일에서 쓸 수 없다'} },
-  partner:{ t:'신규 협력사 발굴 · 교차분석',
-    d:'외부 공시 데이터를 모아 후보를 추리고, 실적·재무를 교차로 확인하는 업무.',
-    data:{lvl:100,h:'필수 — 후보와 평가 이력을 남긴다',s:'한 번 검토한 업체를 또 검토하지 않으려면 기록이 남아야 한다'},
-    link:{lvl:100,h:'필수 — 외부 데이터를 실시간으로',s:'KISCON 같은 공시 데이터를 그때그때 불러와야 의미가 있다'},
-    share:{lvl:55, h:'부분 — 소수 열람 · 권한 분리',s:'전사 공개가 아니라 담당자만 보는 구조가 필요하다'} },
-  doc:{ t:'공용문서 작성 자동화',
-    d:'반복되는 보고·승인 문서를 표준 양식에 맞춰 초안까지 자동으로 만드는 업무.',
-    data:{lvl:65, h:'부분 — 표준 양식과 과거 문서 참조',s:'우리 회사 문서를 근거로 삼아야 쓸 만한 초안이 나온다'},
-    link:{lvl:100,h:'필수 — AI가 초안을 작성한다',s:'문장을 쓰는 일 자체가 외부 AI의 능력이라, 연결이 없으면 껍데기만 남는다'},
-    share:{lvl:100,h:'필수 — 본부 전원이 같은 링크로',s:'개인이 각자 다른 버전을 쓰면 표준화 효과가 사라진다'} },
-  check:{ t:'주간 업무 체크리스트 · 캘린더',
-    d:'주간 할 일을 등록하고, 진행 상태를 확인하고, 다음 주로 이어가는 업무.',
-    data:{lvl:100,h:'필수 — 어제 입력이 남아야 한다',s:'저장이 없으면 새로고침 한 번에 한 주가 사라진다'},
-    link:{lvl:40, h:'선택 — 알림 정도면 충분',s:'마감 전 메일·메시지 발송 정도만 붙여도 효과가 크다'},
-    share:{lvl:75, h:'부분 — 팀 단위 공유',s:'개인용으로 시작해도 되지만, 팀이 함께 보려면 배포가 필요하다'} }
+  report:{ t:'현장 현안보고 AI Agent', org:'재경본부',
+    d:'현장 현안 DB화 및 정기 보고서 자동 생성 AI',
+    data:{lvl:4,h:'DB화 및 자산화',s:'Teams 내 현안 데이터 누적 및 과거 보고서 이력 자산화'},
+    link:{lvl:1,h:'사내 생태계 단독 활용',s:'M365 생태계(Teams, Copilot) 제한 사용 및 외부 API 연동 부재'},
+    share:{lvl:4,h:'조직 단위 시스템화',s:'Power Automate를 활용한 Teams 채널 내 자동 정보 공유'} },
+  glob:{ t:'GLOBAL AI 챗봇', org:'글로벌사업부',
+    d:'비정형 영업 데이터 축적하고 DB 기반 질의에 즉답하는 AI 챗봇',
+    data:{lvl:4,h:'데이터 체계화 및 활용',s:'자체 RAG 구축을 통한 과거 보고서 및 사내 문서 통합 활용'},
+    link:{lvl:2,h:'외부 데이터 수집(크롤링) 단계',s:'외부 50개 매체 자동 수집, 실시간 API 연결 체계 부재'},
+    share:{lvl:1,h:'개인 PC 환경 단독 구동',s:'개인 PC 단독 구동으로 팀원 간 동시 접속 및 공유 불가'} },
+  est:{ t:'견적 적정성 검토 플랫폼', org:'토목사업부',
+    d:'실시간 자재 단가를 기반, 신규 견적을 신속하게 비교 · 분석하는 플랫폼',
+    data:{lvl:2,h:'수기 기반 제한적 축적',s:'시스템 DB화 없이 담당자 수기 입력 및 관리에 의존'},
+    link:{lvl:2,h:'일부 외부 API 제한적 연동',s:'일부 원자재 가격 API 제한적 연동'},
+    share:{lvl:1,h:'개발자 중심 제한적 활용',s:'로컬 PC 기반으로 일부 직원만 제한적으로 활용 중'} }
 };
-var dcTitle = $('#dcTitle'), dcDesc = $('#dcDesc');
+var dcTitle = $('#dcTitle'), dcDesc = $('#dcDesc'), dcOrg = $('#dcOrg');
 var ROW = { data:$('#rowData'), link:$('#rowLink'), share:$('#rowShare') };
 function renderCase(key){
   var c = CASES[key]; if(!c) return;
-  dcTitle.textContent = c.t; dcDesc.textContent = c.d;
+  dcTitle.textContent = c.t; dcDesc.textContent = c.d; dcOrg.textContent = c.org;
   ['data','link','share'].forEach(function(k){
     var v = c[k], row = $('.dc-row[data-row="'+k+'"]');
     ROW[k].innerHTML = v.h + '<s>' + v.s + '</s>';
-    row.style.setProperty('--lvl', v.lvl + '%');
-    row.classList.toggle('off', v.lvl < 45);
+    $('.dc-seg', row).dataset.fill = v.lvl;   /* 5칸 중 몇 칸 */
     row.classList.remove('on'); void row.offsetWidth; row.classList.add('on');
   });
 }
@@ -1811,16 +2786,16 @@ dcBtns.forEach(function(b){
     renderCase(b.dataset.case);
   });
 });
-renderCase('safety');
+renderCase('report');
 
 /* ───── 9. 발표 조작 ───── */
-$('#navNext').addEventListener('click', function(){ go(1); });
-$('#navPrev').addEventListener('click', function(){ go(-1); });
 addEventListener('keydown', function(e){
   if(toc.classList.contains('open')){ if(e.key === 'Escape') setToc(false); return; }
   var t = e.target.tagName;
-  if(t === 'INPUT' || t === 'TEXTAREA' || t === 'BUTTON' || e.target.isContentEditable) return;
+  if(t === 'INPUT' || t === 'TEXTAREA' || e.target.isContentEditable) return;
   var k = e.key;
+  /* 버튼에 포커스가 있을 때 스페이스·엔터는 버튼을 누르는 동작이므로 넘기지 않는다 */
+  if(t === 'BUTTON' && (k === ' ' || k === 'Enter')) return;
   if(k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || (k === ' ' && !e.shiftKey) || k === 'Enter'){ e.preventDefault(); go(1); }
   else if(k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || (k === ' ' && e.shiftKey)){ e.preventDefault(); go(-1); }
   else if(k === 'Home'){ e.preventDefault(); goBeat(0); }
